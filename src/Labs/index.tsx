@@ -12,8 +12,9 @@ export default function Labs(){
             <h1>Collection for Labs</h1>
 
             <h2> Name: Liuyi Yang </h2>
+            <p>Section: 03</p>
 
-            <a href="https://github.com/MelanieLLY/kanbas-react-web-app" id="wd-github"> Link to my Github</a>
+            <a href="https://github.com/MelanieLLY/kanbas-react-web-app" id="wd-github"> Link to Github</a>
  
             <TOC />
             <Routes>
