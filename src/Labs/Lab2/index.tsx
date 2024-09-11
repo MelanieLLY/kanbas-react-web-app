@@ -1,8 +1,8 @@
-export default function Lab1(){
+export default function Lab2(){
     return (
-        <div id="wd-lab1">
+        <div id="wd-lab2">
             <h2>
-                Text for Lab 1
+                Text for Lab 2
             </h2>
             <h3>HTML Examples</h3>
 
