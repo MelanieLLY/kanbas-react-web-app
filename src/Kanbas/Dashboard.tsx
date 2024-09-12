@@ -6,15 +6,15 @@ export default function Dashboard() {
       <h2 id="wd-dashboard-published">Published Courses (7)</h2> <hr />
       <div id="wd-dashboard-courses">
         <div className="wd-dashboard-course">
-          <img src="/images/Math.webp" width={200} />
+          <img src="/images/Web.webp" width={200} />
           <div>
             <Link
               className="wd-dashboard-course-link"
-              to="/Kanbas/Courses/MA101/Home"
+              to="/Kanbas/Courses/CS1234/Home"
             >
-              MA101 Basic Math
+              CS1234 Basic Web Dev
             </Link>
-            <p className="wd-dashboard-course-title">Math class</p>
+            <p className="wd-dashboard-course-title">CS Web development class</p>
             <Link to="/Kanbas/Courses/MA101/Home"> Go </Link>
           </div>
         </div>
@@ -115,6 +115,7 @@ export default function Dashboard() {
             <Link to="/Kanbas/Courses/GE117/Home"> Go </Link>
           </div>
         </div>
+      <p> Images from DALL-E</p>
       </div>
     </div>
   );
