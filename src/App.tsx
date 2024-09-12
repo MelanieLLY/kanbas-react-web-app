@@ -16,7 +16,6 @@ function App() {
           <Route path="/" element={<Navigate to="Labs" />} />
           <Route path='/Labs/*' element={<Labs />} />
           <Route path='/Kanbas/*' element={<Kanbas />} />
-
         </Routes>
 
       </div>
