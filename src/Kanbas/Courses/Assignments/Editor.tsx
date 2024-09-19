@@ -32,7 +32,6 @@ export default function AssignmentEditor() {
                 <option value="quizzes">Quizzes</option>
                 <option value="exams">Exams</option>
                 <option value="projects">Projects</option>
-
               </select>
             </td>
           </tr>
@@ -56,18 +55,18 @@ export default function AssignmentEditor() {
               <select id="wd-submission-type">
                 <option value="online">Online</option>
                 <option value="inperson">In person</option>
-
-
               </select>
-            </td></tr>
+            </td>
+          </tr>
 
-
-            <tr>
-            <td align="right" valign="top"> </td>
+          <tr>
+            <td align="right" valign="top">
+              {" "}
+            </td>
 
             <td>
               <p>Online Entry Options</p>
-          
+
               <label>
                 <input type="checkbox" id="wd-text-entry" value="text-entry" />
                 Text Entry
@@ -111,8 +110,6 @@ export default function AssignmentEditor() {
             </td>
           </tr>
 
-
-
           <tr>
             <td align="right" valign="top">
               <label htmlFor="wd-assign-to">Assign</label>
@@ -137,7 +134,6 @@ export default function AssignmentEditor() {
           </tr>
 
           <tr>
-
             <td align="right" valign="top">
               <label htmlFor="wd-available-from">Available From</label>
             </td>
@@ -151,7 +147,6 @@ export default function AssignmentEditor() {
               <input id="wd-available-until" type="date" />
             </td>
           </tr>
-
         </tbody>
       </table>
     </div>

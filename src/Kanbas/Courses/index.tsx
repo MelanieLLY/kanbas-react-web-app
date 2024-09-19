@@ -6,7 +6,6 @@ import Home from "./Home";
 import Assignments from "./Assignments";
 import AssignmentEditor from "./Assignments/Editor";
 
-
 export default function Courses() {
   return (
     <div id="wd-courses">
@@ -25,7 +24,6 @@ export default function Courses() {
               <Route path="Assignments" element={<Assignments />} />
               <Route path="People" element={<h2>People</h2>} />
               <Route path="Assignments/:aid" element={<AssignmentEditor />} />
-
             </Routes>
           </td>
         </tr>

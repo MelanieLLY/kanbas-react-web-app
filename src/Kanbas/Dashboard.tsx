@@ -14,7 +14,9 @@ export default function Dashboard() {
             >
               CS1234 Basic Web Dev
             </Link>
-            <p className="wd-dashboard-course-title">CS Web development class</p>
+            <p className="wd-dashboard-course-title">
+              CS Web development class
+            </p>
             <Link to="/Kanbas/Courses/MA101/Home"> Go </Link>
           </div>
         </div>
@@ -115,7 +117,7 @@ export default function Dashboard() {
             <Link to="/Kanbas/Courses/GE117/Home"> Go </Link>
           </div>
         </div>
-      <p> Images from DALL-E</p>
+        <p> Images from DALL-E</p>
       </div>
     </div>
   );
