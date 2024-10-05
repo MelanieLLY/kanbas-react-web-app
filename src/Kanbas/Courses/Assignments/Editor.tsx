@@ -167,7 +167,7 @@ export default function AssignmentEditor() {
                 <label htmlFor="wd-assign-to">Assign to</label>
               </div>
               <div className="col-8">
-                <input id="wd-assign-to" className="form-control" type="text" />
+                <input id="wd-assign-to" className="form-control" type="text" placeholder="Everyone" />
               </div>
               <div className="col-4 m-2">
                 <label htmlFor="wd-due-date">Due Date</label>

@@ -28,4 +28,8 @@ body * {  font-family: Arial, Helvetica, sans-serif;  }
   .wd-lesson {
     border-left: 3px solid green !important;
   }
+
+  select.form-control {
+    appearance: auto;
+  }
   
