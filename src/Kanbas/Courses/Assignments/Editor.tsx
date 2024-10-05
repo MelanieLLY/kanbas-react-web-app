@@ -161,15 +161,15 @@ export default function AssignmentEditor() {
             <p>Assign</p>
           </div>
 
-          <div className="col-4">
-            <div className="row mb-3">
-              <div className="col-4">
+          <div className="col-8 border">
+            <div className="row">
+              <div className="col-4 m-2">
                 <label htmlFor="wd-assign-to">Assign to</label>
               </div>
               <div className="col-8">
                 <input id="wd-assign-to" className="form-control" type="text" />
               </div>
-              <div className="col-4">
+              <div className="col-4 m-2">
                 <label htmlFor="wd-due-date">Due Date</label>
               </div>
               <div className="col-8">
@@ -177,23 +177,23 @@ export default function AssignmentEditor() {
               </div>
             </div>
 
-            <div className="row mb-3">
-              <div className="col-6">
+            <div className="row">
+              <div className="col-3 m-1">
                 <label htmlFor="wd-available-from">Available From</label>
               </div>
-              <div className="col-6">
+              <div className="col-3 m-1">
                 <label htmlFor="wd-available-until">Until</label>
               </div>
             </div>
             <div className="row mb-3">
-              <div className="col-6">
+              <div className="col-3">
                 <input
                   id="wd-available-from"
                   className="form-control"
                   type="date"
                 />
               </div>
-              <div className="col-6">
+              <div className="col-3">
                 <input
                   id="wd-available-until"
                   className="form-control"
