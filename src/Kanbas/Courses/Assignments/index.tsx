@@ -51,58 +51,76 @@ export default function Assignments() {
 
  {/* assignment item list  */}
  <div className="d-flex justify-content-between align-items-center p-2 bg-white border border-gray">
- <BsGripVertical className="me-2 fs-4" />
 
- <div id="wd-assignments" className="container">
-  <ul id="wd-assignment-list" className="list-group w-100" >
-    <li className="wd-assignment-list-item list-group-item d-flex align-items-start" style={{ backgroundColor: 'white', border: 'none' }}>
-      <div className="assignment-icon me-3">
-        <FaBook className="fs-4 text-muted" /> 
+ <div id="wd-assignments" className="container p-0">
+  <ul id="wd-assignment-list" className="list-group p-0 m-0">
+    
+    <li className="wd-assignment-list-item d-flex align-items-center border-bottom border-gray">
+      <div style={{ backgroundColor: 'green', width: '3px', height: '80px' }}></div>
+
+      <div className="assignment-icon d-flex align-items-center me-3">
+        <BsGripVertical className="me-2 fs-4" />
+        <FaBook className="fs-4 text-muted" />
       </div>
+
       <div className="assignment-info">
         <a className="wd-assignment-link fw-bold text-decoration-none" href="#/Kanbas/Courses/CS1234/Assignments/123">
           A1 - ENV + HTML
         </a>
         <p className="wd-assignment-overview text-muted">
-          Multiple Modules | <strong>Not available until:</strong> <span>2024-09-12 09:00 AM</span> | <strong>Due:</strong> <span>2024-09-12 11:59 PM</span> | Total 100
+          Multiple Modules | <strong>Not available until:</strong> <span>2024-09-12 09:00 AM</span> | 
+          <strong>Due:</strong> <span>2024-09-12 11:59 PM</span> | Total 100
         </p>
+      </div>
+      <div className="ms-auto">
+          <AssLessonControlButtons />
       </div>
     </li>
 
-    <li className="wd-assignment-list-item list-group-item d-flex align-items-start" style={{ backgroundColor: 'white', border: 'none', borderBottom: '1px solid gray' }}>
-      <div className="assignment-icon me-3">
-        <FaBook className="fs-4 text-muted" /> 
+    <li className="wd-assignment-list-item d-flex align-items-center border-bottom border-gray">
+      <div style={{ backgroundColor: 'green', width: '3px', height: '80px' }}></div>
+      <div className="assignment-icon d-flex align-items-center me-3">
+        <BsGripVertical className="me-2 fs-4" />
+        <FaBook className="fs-4 text-muted" />
       </div>
       <div className="assignment-info">
         <a className="wd-assignment-link fw-bold text-decoration-none" href="#/Kanbas/Courses/CS1234/Assignments/124">
           A2 - CSS Basics
         </a>
         <p className="wd-assignment-overview text-muted">
-          Single Module | <strong>Not available until:</strong> <span>2024-09-19 09:00 AM</span> | <strong>Due:</strong> <span>2024-09-19 11:59 PM</span> | Total 100
+          Single Module | <strong>Not available until:</strong> <span>2024-09-19 09:00 AM</span> |
+          <strong>Due:</strong> <span>2024-09-19 11:59 PM</span> | Total 100
         </p>
-
       </div>
-
+      <div className="ms-auto">
+        <AssLessonControlButtons />
+      </div>
     </li>
 
-    <li className="wd-assignment-list-item list-group-item d-flex align-items-start" style={{ backgroundColor: 'white', border: 'none', borderBottom: '1px solid gray' }}>
-      <div className="assignment-icon me-3">
-        <FaBook className="fs-4 text-muted" /> 
+
+    <li className="wd-assignment-list-item d-flex align-items-center border-bottom border-gray">
+      <div style={{ backgroundColor: 'green', width: '3px', height: '80px' }}></div>
+      <div className="assignment-icon d-flex align-items-center me-3">
+        <BsGripVertical className="me-2 fs-4" />
+        <FaBook className="fs-4 text-muted" />
       </div>
       <div className="assignment-info">
         <a className="wd-assignment-link fw-bold text-decoration-none" href="#/Kanbas/Courses/CS1234/Assignments/125">
           A3 - Responsive Design
         </a>
         <p className="wd-assignment-overview text-muted">
-          Multiple Modules | <strong>Not available until:</strong> <span>2024-09-26 09:00 AM</span> | <strong>Due:</strong> <span>2024-09-26 11:59 PM</span> | Total 100
+          Multiple Modules | <strong>Not available until:</strong> <span>2024-09-26 09:00 AM</span> |
+          <strong>Due:</strong> <span>2024-09-26 11:59 PM</span> | Total 100
         </p>
       </div>
+      <div className="ms-auto">
+        <AssLessonControlButtons />
+      </div>
     </li>
+
   </ul>
 </div>
 </div>
-
-
 
 
     </div>
