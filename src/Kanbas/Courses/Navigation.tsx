@@ -18,12 +18,11 @@ export default function CoursesNavigation() {
   return (
     <div id="wd-courses-navigation" className="wd list-group fs-5 rounded-0">
       {links.map((link) => {
-        const lowerCaseLink = link.toLowerCase();
-        const isActive = location.pathname.includes(lowerCaseLink);
+        const isActive = location.pathname.includes(link);
         return (
           <Link
             key={link}
-            to={`/Kanbas/Courses/${cid}/${lowerCaseLink}`}
+            to={`/Kanbas/Courses/${cid}/${link}`}
             className={`list-group-item border border-0 ${
               isActive ? "active text-danger" : "text-dark"
             }`}
