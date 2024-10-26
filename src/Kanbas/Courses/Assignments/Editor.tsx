@@ -1,16 +1,219 @@
 export default function AssignmentEditor() {
   return (
-    <div id="wd-assignments-editor">
-      <label htmlFor="wd-name">Assignment Name </label>
-      <input id="wd-name" value="A1 - ENV + HTML" />
-      <br />
-      <br />
-      <textarea id="wd-description" style={{ width: "380px", height: "300px" }}>
-        The assignment is available online. Submit a link to the landing page.
-        Use the following starter code to get going with the implementation of
-        the Assignment Editor screen.
-      </textarea>
-      <br />
+    <div id="wd-assignments-editor" className="container">
+      <h2>Assignment Editor</h2>
+
+      <div className="row mb-3">
+        <div className="row-1">
+          <label htmlFor="wd-name">Assignment Name</label>
+        </div>
+        <div className="row-2">
+          <input
+            id="wd-name"
+            className="form-control"
+            type="text"
+            value="A1 - ENV + HTML"
+          />
+        </div>
+      </div>
+
+      <div className="row mb-3">
+        <div className="row-1">
+          <label htmlFor="wd-description">Description</label>
+        </div>
+        <div className="row-2">
+          <textarea
+            id="wd-description"
+            className="form-control"
+            style={{ height: "300px" }}
+          >
+            The assignment is available online. Submit a link to the landing
+            page. Use the following starter code to get going with the
+            implementation of the Assignment Editor screen.
+          </textarea>
+        </div>
+      </div>
+
+      <div className="row mb-3">
+        <div className="col-4 text-end">
+          <label htmlFor="wd-points">Points</label>
+        </div>
+        <div className="col-8">
+          <input
+            id="wd-points"
+            className="form-control"
+            type="number"
+            value={100}
+          />
+        </div>
+      </div>
+
+      <div className="row mb-3">
+        <div className="col-4 text-end">
+          <label htmlFor="wd-group">Assignment Group</label>
+        </div>
+        <div className="col-8">
+          <select id="wd-group" className="form-control">
+            <option value="online">Assignments</option>
+            <option value="quizzes">Quizzes</option>
+            <option value="exams">Exams</option>
+            <option value="projects">Projects</option>
+          </select>
+        </div>
+      </div>
+
+      <div className="row mb-3">
+        <div className="col-4 text-end">
+          <label htmlFor="wd-display-grade-as">Display Grade As</label>
+        </div>
+        <div className="col-8">
+          <select id="wd-display-grade-as" className="form-control">
+            <option value="percentage">Percentage</option>
+            <option value="points">Points</option>
+            <option value="letter">Letter Grade</option>
+          </select>
+        </div>
+      </div>
+
+      <div className="row mb-3">
+        <div className="col-4 text-end">
+          <label htmlFor="wd-submission-type">Submission Type</label>
+        </div>
+        <div className="col-8">
+          <select id="wd-submission-type" className="form-control">
+            <option value="online">Online</option>
+            <option value="inperson">In person</option>
+          </select>
+          <div className="row mb-3">
+            <div className="row-1 m-3">
+              <label>Online Entry Options</label>
+            </div>
+            <div className="col-8">
+              <div className="form-check">
+                <input
+                  className="form-check-input"
+                  type="checkbox"
+                  id="wd-text-entry"
+                  value="text-entry"
+                />
+                <label className="form-check-label" htmlFor="wd-text-entry">
+                  Text Entry
+                </label>
+              </div>
+              <div className="form-check">
+                <input
+                  className="form-check-input"
+                  type="checkbox"
+                  id="wd-website-url"
+                  value="website-url"
+                />
+                <label className="form-check-label" htmlFor="wd-website-url">
+                  Website URL
+                </label>
+              </div>
+              <div className="form-check">
+                <input
+                  className="form-check-input"
+                  type="checkbox"
+                  id="wd-media-recording"
+                  value="media-recording"
+                />
+                <label
+                  className="form-check-label"
+                  htmlFor="wd-media-recording"
+                >
+                  Media Recording
+                </label>
+              </div>
+              <div className="form-check">
+                <input
+                  className="form-check-input"
+                  type="checkbox"
+                  id="wd-student-annotation"
+                  value="student-annotation"
+                />
+                <label
+                  className="form-check-label"
+                  htmlFor="wd-student-annotation"
+                >
+                  Student Annotation
+                </label>
+              </div>
+              <div className="form-check">
+                <input
+                  className="form-check-input"
+                  type="checkbox"
+                  id="wd-file-upload"
+                  value="file-upload"
+                />
+                <label className="form-check-label" htmlFor="wd-file-upload">
+                  File Upload
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="container">
+        <div className="row mb-3">
+          <div className="col-4 text-end">
+            <p>Assign</p>
+          </div>
+
+          <div className="col-8 border">
+            <div className="row">
+              <div className="col-4 m-2">
+                <label htmlFor="wd-assign-to">Assign to</label>
+              </div>
+              <div className="col-8">
+                <input id="wd-assign-to" className="form-control" type="text" placeholder="Everyone" />
+              </div>
+              <div className="col-4 m-2">
+                <label htmlFor="wd-due-date">Due Date</label>
+              </div>
+              <div className="col-8">
+                <input id="wd-due-date" className="form-control" type="date" />
+              </div>
+            </div>
+
+            <div className="row">
+              <div className="col-3 m-1">
+                <label htmlFor="wd-available-from">Available From</label>
+              </div>
+              <div className="col-3 m-1">
+                <label htmlFor="wd-available-until">Until</label>
+              </div>
+            </div>
+            <div className="row mb-3">
+              <div className="col-3">
+                <input
+                  id="wd-available-from"
+                  className="form-control"
+                  type="date"
+                />
+              </div>
+              <div className="col-3">
+                <input
+                  id="wd-available-until"
+                  className="form-control"
+                  type="date"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <hr className="text-secondary" />
+
+      <div className="d-flex justify-content-end">
+        <button className="btn btn-light me-2">Cancel</button>
+        <button className="btn btn-danger">Save</button>
+      </div>
+
+      {/* 
+      
       <table>
         <tbody>
           <tr>
@@ -149,6 +352,7 @@ export default function AssignmentEditor() {
           </tr>
         </tbody>
       </table>
+ */}
     </div>
   );
 }
