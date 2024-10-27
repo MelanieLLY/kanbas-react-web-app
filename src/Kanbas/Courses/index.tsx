@@ -1,7 +1,7 @@
 import KanbasNavigation from "../Navigation";
 import CoursesNavigation from "./Navigation";
 import Modules from "./Modules";
-import { Navigate, Route, Routes, useParams,useLocation } from "react-router";
+import { Navigate, Route, Routes, useParams, useLocation } from "react-router";
 import Home from "./Home";
 import Assignments from "./Assignments";
 import AssignmentEditor from "./Assignments/Editor";

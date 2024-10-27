@@ -70,18 +70,21 @@ export default function Assignments() {
                     </a>
 
                     <p className="wd-assignment-overview text-muted">
-  <span className="text-danger">Single Module</span> | 
-  <strong> Not available until:</strong>{" "}
-  <span>
-    {typeof assignment.availableDate === 'object' ? `${assignment.availableDate.date} ${assignment.availableDate.time}` : "TBD"}
-  </span> | 
-  <strong> Due:</strong>{" "}
-  <span>
-    {typeof assignment.dueDate === 'object' ? `${assignment.dueDate.date} ${assignment.dueDate.time}` : "TBD"}
-  </span> |{" "}
-  {assignment.points || 100} pts
-</p>
-
+                      <span className="text-danger">Single Module</span> |
+                      <strong> Not available until:</strong>{" "}
+                      <span>
+                        {typeof assignment.availableDate === "object"
+                          ? `${assignment.availableDate.date} ${assignment.availableDate.time}`
+                          : "TBD"}
+                      </span>{" "}
+                      |<strong> Due:</strong>{" "}
+                      <span>
+                        {typeof assignment.dueDate === "object"
+                          ? `${assignment.dueDate.date} ${assignment.dueDate.time}`
+                          : "TBD"}
+                      </span>{" "}
+                      | {assignment.points || 100} pts
+                    </p>
                   </div>
 
                   <div className="ms-auto">
