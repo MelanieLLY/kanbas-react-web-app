@@ -2,48 +2,44 @@ import { Link } from "react-router-dom";
 import * as db from "./Database";
 import React, { useState } from "react";
 
-export default function Dashboard({ courses, course, setCourse, addNewCourse,
-  deleteCourse, updateCourse }: {
-  courses: any[]; course: any; setCourse: (course: any) => void;
-  addNewCourse: () => void; deleteCourse: (course: any) => void;
-  updateCourse: () => void; }) {
-  // const [courses, setCourses] = useState<any[]>(db.courses);
-  // const [course, setCourse] = useState<any>({
-  //   _id: "0",
-  //   name: "New Course",
-  //   number: "New Number",
-  //   startDate: "2024-01-15",
-  //   endDate: "2024-05-15",
-  //   department: "D000",
-  //   credits: 3,
-  //   description: "Course description",
-  //   link: "/Kanbas/Courses/CH000/Home",
-  //   image: "/images/CoursePicDefault.webp",
-  //   buttonText: "Go",
-  // });
+export default function Dashboard() {
+  const [courses, setCourses] = useState<any[]>(db.courses);
+  const [course, setCourse] = useState<any>({
+    _id: "0",
+    name: "New Course",
+    number: "New Number",
+    startDate: "2024-01-15",
+    endDate: "2024-05-15",
+    department: "D000",
+    credits: 3,
+    description: "Course description",
+    link: "/Kanbas/Courses/CH000/Home",
+    image: "/images/CoursePicDefault.webp",
+    buttonText: "Go",
+  });
 
-  // const updateCourse = () => {
-  //   setCourses(
-  //     courses.map((c) => {
-  //       if (c._id === course._id) {
-  //         return course;
-  //       } else {
-  //         return c;
-  //       }
-  //     })
-  //   );
-  // };
+  const updateCourse = () => {
+    setCourses(
+      courses.map((c) => {
+        if (c._id === course._id) {
+          return course;
+        } else {
+          return c;
+        }
+      })
+    );
+  };
 
-  // const addNewCourse = () => {
-  //   const newCourse = {
-  //     ...course,
-  //     _id: new Date().getTime().toString(),
-  //   };
-  //   setCourses([...courses, { ...course, ...newCourse }]);
-  // };
-  // const deleteCourse = (courseId: string) => {
-  //   setCourses(courses.filter((course) => course._id !== courseId));
-  // };
+  const addNewCourse = () => {
+    const newCourse = {
+      ...course,
+      _id: new Date().getTime().toString(),
+    };
+    setCourses([...courses, { ...course, ...newCourse }]);
+  };
+  const deleteCourse = (courseId: string) => {
+    setCourses(courses.filter((course) => course._id !== courseId));
+  };
 
   
 
