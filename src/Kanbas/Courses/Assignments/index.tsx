@@ -7,6 +7,7 @@ import AssLessonControlButtons from "./AssLessonControlButtons";
 import { useDispatch, useSelector } from "react-redux";
 import { addAssignment, deleteAssignment } from "../Assignments/reducer"; // Updated import for deleteAssignment
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 // Main Assignment component
 export default function Assignments() {
@@ -19,6 +20,7 @@ export default function Assignments() {
 
   // Handler to add a new assignment
   const handleAddAssignment = () => {
+    if (newAssignmentTitle.trim() === "") return;
     dispatch(
       addAssignment({
         title: newAssignmentTitle,
@@ -47,28 +49,12 @@ export default function Assignments() {
 
         {/* Conditional rendering for FACULTY role */}
         {currentUser?.role === "FACULTY" && (
-          <div>
-            <button className="btn btn-secondary m-1">
-              <GoPlus className="fs-4" /> Group
-            </button>
-
-            {/* Update to add new assignment */}
-            <button
-              className="btn btn-danger m-1"
-              onClick={handleAddAssignment} // Added onClick handler
-            >
-              <GoPlus className="fs-4" /> Assignment
-            </button>
-
-            {/* Input for new assignment title */}
-            <input
-              type="text"
-              value={newAssignmentTitle} // Bound to state
-              onChange={(e) => setNewAssignmentTitle(e.target.value)} // Update new assignment title
-              placeholder="Enter assignment title"
-              className="form-control mt-2"
-            />
-          </div>
+          <Link
+            to={`/Kanbas/Courses/${cid}/Assignments/Editor`}
+            className="btn btn-primary"
+          >
+            <FaPlusCircle /> Add Assignment
+          </Link>
         )}
       </div>
 

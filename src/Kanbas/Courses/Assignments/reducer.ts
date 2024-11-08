@@ -22,7 +22,9 @@ const assignmentsSlice = createSlice({
         displayGradeAs: assignment.displayGradeAs || "points",
         submissionType: assignment.submissionType || "online",
       };
-      state.assignments = [...state.assignments, newAssignment];
+      // state.assignments = [...state.assignments, newAssignment];
+      state.assignments.push(newAssignment); // 通过 push 添加新作业
+
     },
     deleteAssignment: (state, { payload: assignmentId }) => {
       state.assignments = state.assignments.filter(

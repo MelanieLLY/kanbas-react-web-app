@@ -1,37 +1,58 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { updateAssignment } from "../Assignments/reducer"; // Ensure updateAssignment action exists
+import { addAssignment, updateAssignment } from "../Assignments/reducer"; 
 
 export default function AssignmentEditor() {
   const { aid, cid } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  console.log("Current aid:", aid);  // Debugging statement
 
   const assignment = useSelector((state: any) =>
     state.assignments.assignments.find((a: any) => a._id === aid)
   );
 
-  const [localAssignment, setLocalAssignment] = useState<any>(null);
+
+  const [localAssignment, setLocalAssignment] = useState<any>(
+    assignment || {
+      title: "",
+      description: "",
+      course: cid,
+      points: 100,
+      assignmentGroup: "Assignments",
+      displayGradeAs: "points",
+      submissionType: "online",
+      onlineEntryOptions: [],
+      assignTo: "Everyone",
+      dueDate: { date: "", time: "" },
+      availableDate: { date: "", time: "" },
+      availableUntil: { date: "", time: "" },
+    }
+  );
 
   useEffect(() => {
-    if (assignment) {
+    if (aid && assignment) {
       setLocalAssignment({ ...assignment });
     }
-  }, [assignment]);
+  }, [aid, assignment]); 
 
-  if (!assignment) {
-    return <div>Assignment not found</div>;
-  }
+  // if (!assignment) {
+  //   return <div>Assignment not found</div>;
+  // }
 
   const handleSave = () => {
-    dispatch(updateAssignment(localAssignment));
+    if (aid) {
+      dispatch(updateAssignment(localAssignment));
+    } else {
+      dispatch(addAssignment(localAssignment));
+    }
     navigate(`/Kanbas/Courses/${cid}/Assignments`);
   };
 
   return (
     <div id="wd-assignments-editor" className="container">
-      <h2>Assignment Editor</h2>
+      <h2>{aid ? "Edit Assignment" : "Add New Assignment"}</h2>
 
       {/* Assignment Name */}
       <div className="row mb-3">
