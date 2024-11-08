@@ -58,6 +58,19 @@ export default function Signin() {
       >
         Sign up
       </Link>
+      <p>( For testing:</p>
+      <ul>
+        <li>Sample student:</li>
+        <ul>
+          <li>"username": "iron_man"</li>
+          <li>"password": "stark123"</li>
+        </ul>
+        <li>Sample faculty:</li>
+        <ul>
+          <li>"username": "black_panther"</li>
+          <li>"password": "wakanda123")</li>
+        </ul>
+      </ul>
     </div>
   );
 }
