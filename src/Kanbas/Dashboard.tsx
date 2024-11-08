@@ -1,7 +1,9 @@
 import { Link } from "react-router-dom";
 import * as db from "./Database";
-import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { loadEnrollments } from "./enrollmentActions";
+
 
 export default function Dashboard({
   courses,
@@ -20,10 +22,35 @@ export default function Dashboard({
 }) {
   const { currentUser } = useSelector((state: any) => state.accountReducer);
   const { enrollments } = db;
+  const dispatch = useDispatch(); 
+  const [showAllCourses, setShowAllCourses] = useState(false); 
+  
+  const toggleCourses = () => {
+    setShowAllCourses(!showAllCourses);
+  };
+
+  useEffect(() => {
+    if (currentUser?.role === "STUDENT") {
+      dispatch(loadEnrollments(currentUser._id));
+    }
+  }, [currentUser, dispatch]);
 
   return (
     <div id="wd-dashboard">
       <h1 id="wd-dashboard-title">Dashboard</h1> <hr />
+      {currentUser?.role === "STUDENT" && (
+        <button 
+          className="btn btn-primary float-end" 
+          onClick={toggleCourses}
+        >
+          {showAllCourses ? "Show Enrolled Courses" : "Show All Courses"}
+        </button>
+      )}
+
+
+
+
+
       {currentUser?.role === "FACULTY" && (
         <div>
           <h5>
@@ -66,10 +93,9 @@ export default function Dashboard({
         <div className="row row-cols-1 row-cols-md-5 g-4">
           {courses
             .filter((course) =>
-              enrollments.some(
-                (enrollment) =>
-                  enrollment.user === currentUser._id &&
-                  enrollment.course === course._id
+              showAllCourses || enrollments.some(
+                enrollment => enrollment.user === currentUser._id && 
+                              enrollment.course === course._id
               )
             )
             .map((course) => (

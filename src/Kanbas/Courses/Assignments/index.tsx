@@ -132,15 +132,17 @@ export default function Assignments() {
 
                   {/* Control Buttons */}
                   <div className="ms-auto">
-                    <AssLessonControlButtons />
+                  {currentUser?.role === "FACULTY" && (<AssLessonControlButtons />)}
                     {currentUser?.role === "FACULTY" && (
                       <button
                         className="btn btn-outline-danger ms-2"
-                        onClick={() => dispatch(deleteAssignment(assignment._id))} // Handler for delete
+                        onClick={() => dispatch(deleteAssignment(assignment._id))}
                       >
                         Delete
                       </button>
                     )}
+
+
                   </div>
                 </li>
               ))}
