@@ -7,11 +7,11 @@ export default function AssignmentEditor() {
   const { aid, cid } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  
-  const assignment = useSelector((state: any) => 
+
+  const assignment = useSelector((state: any) =>
     state.assignments.assignments.find((a: any) => a._id === aid)
   );
-  
+
   const [localAssignment, setLocalAssignment] = useState<any>(null);
 
   useEffect(() => {
@@ -164,23 +164,122 @@ export default function AssignmentEditor() {
           </select>
 
           {/* Online Entry Options */}
+          {/* Online Entry Options */}
           {localAssignment?.submissionType === "online" && (
             <div className="row mb-3 mt-2">
               <div className="col-8 offset-4">
+                {/* Text Entry */}
+                <div className="form-check">
+                  <input
+                    className="form-check-input"
+                    type="checkbox"
+                    id="wd-text-entry"
+                    checked={
+                      localAssignment.onlineEntryOptions?.includes(
+                        "text-entry"
+                      ) || false
+                    }
+                    onChange={(e) =>
+                      setLocalAssignment({
+                        ...localAssignment,
+                        onlineEntryOptions: e.target.checked
+                          ? [
+                              ...(localAssignment.onlineEntryOptions || []),
+                              "text-entry",
+                            ]
+                          : (localAssignment.onlineEntryOptions || []).filter(
+                              (option: string) => option !== "text-entry"
+                            ),
+                      })
+                    }
+                  />
+                  <label className="form-check-label" htmlFor="wd-text-entry">
+                    Text Entry
+                  </label>
+                </div>
+
+                {/* Website URL */}
+                <div className="form-check">
+                  <input
+                    className="form-check-input"
+                    type="checkbox"
+                    id="wd-website-url"
+                    checked={
+                      localAssignment.onlineEntryOptions?.includes(
+                        "website-url"
+                      ) || false
+                    }
+                    onChange={(e) =>
+                      setLocalAssignment({
+                        ...localAssignment,
+                        onlineEntryOptions: e.target.checked
+                          ? [
+                              ...(localAssignment.onlineEntryOptions || []),
+                              "website-url",
+                            ]
+                          : (localAssignment.onlineEntryOptions || []).filter(
+                              (option: string) => option !== "website-url"
+                            ),
+                      })
+                    }
+                  />
+                  <label className="form-check-label" htmlFor="wd-website-url">
+                    Website URL
+                  </label>
+                </div>
+
+                {/* Media Recording */}
+                <div className="form-check">
+                  <input
+                    className="form-check-input"
+                    type="checkbox"
+                    id="wd-media-recording"
+                    checked={
+                      localAssignment.onlineEntryOptions?.includes(
+                        "media-recording"
+                      ) || false
+                    }
+                    onChange={(e) =>
+                      setLocalAssignment({
+                        ...localAssignment,
+                        onlineEntryOptions: e.target.checked
+                          ? [
+                              ...(localAssignment.onlineEntryOptions || []),
+                              "media-recording",
+                            ]
+                          : (localAssignment.onlineEntryOptions || []).filter(
+                              (option: string) => option !== "media-recording"
+                            ),
+                      })
+                    }
+                  />
+                  <label
+                    className="form-check-label"
+                    htmlFor="wd-media-recording"
+                  >
+                    Media Recording
+                  </label>
+                </div>
+
+                {/* File Upload */}
                 <div className="form-check">
                   <input
                     className="form-check-input"
                     type="checkbox"
                     id="wd-file-upload"
                     checked={
-                      localAssignment.onlineEntryOptions?.includes("file-upload") ||
-                      false
+                      localAssignment.onlineEntryOptions?.includes(
+                        "file-upload"
+                      ) || false
                     }
                     onChange={(e) =>
                       setLocalAssignment({
                         ...localAssignment,
                         onlineEntryOptions: e.target.checked
-                          ? [...(localAssignment.onlineEntryOptions || []), "file-upload"]
+                          ? [
+                              ...(localAssignment.onlineEntryOptions || []),
+                              "file-upload",
+                            ]
                           : (localAssignment.onlineEntryOptions || []).filter(
                               (option: string) => option !== "file-upload"
                             ),
@@ -191,157 +290,149 @@ export default function AssignmentEditor() {
                     File Upload
                   </label>
                 </div>
-                {/* Repeat similar checkboxes for other online entry options as needed */}
               </div>
             </div>
           )}
         </div>
       </div>
 
-      {/* Available and Due Dates */}
+      {/* Assign To */}
+      <div className="row mb-3">
+        <div className="col-4 text-end">
+          <label htmlFor="wd-assign-to">Assign to</label>
+        </div>
+        <div className="col-8">
+          <input
+            id="wd-assign-to"
+            className="form-control"
+            type="text"
+            value={localAssignment?.assignTo || "Everyone"}
+            onChange={(e) =>
+              setLocalAssignment({
+                ...localAssignment,
+                assignTo: e.target.value,
+              })
+            }
+          />
+        </div>
+      </div>
 
+      {/* Due Date */}
+      <div className="row mb-3">
+        <div className="col-4 text-end">
+          <label htmlFor="wd-due-date">Due Date</label>
+        </div>
+        <div className="col-8">
+          <input
+            id="wd-due-date"
+            className="form-control"
+            type="date"
+            value={localAssignment?.dueDate?.date || ""}
+            onChange={(e) =>
+              setLocalAssignment({
+                ...localAssignment,
+                dueDate: {
+                  ...localAssignment.dueDate,
+                  date: e.target.value,
+                },
+              })
+            }
+          />
+          <input
+            id="wd-due-time"
+            className="form-control mt-2"
+            type="time"
+            value={localAssignment?.dueDate?.time || ""}
+            onChange={(e) =>
+              setLocalAssignment({
+                ...localAssignment,
+                dueDate: {
+                  ...localAssignment.dueDate,
+                  time: e.target.value,
+                },
+              })
+            }
+          />
+        </div>
+      </div>
 
+      {/* Available From */}
+      <div className="row mb-3">
+        <div className="col-4 text-end">
+          <label htmlFor="wd-available-from">Available From</label>
+        </div>
+        <div className="col-8">
+          <input
+            id="wd-available-from-date"
+            className="form-control"
+            type="date"
+            value={localAssignment?.availableDate?.date || ""}
+            onChange={(e) =>
+              setLocalAssignment({
+                ...localAssignment,
+                availableDate: {
+                  ...localAssignment.availableDate,
+                  date: e.target.value,
+                },
+              })
+            }
+          />
+          <input
+            id="wd-available-from-time"
+            className="form-control mt-2"
+            type="time"
+            value={localAssignment?.availableDate?.time || ""}
+            onChange={(e) =>
+              setLocalAssignment({
+                ...localAssignment,
+                availableDate: {
+                  ...localAssignment.availableDate,
+                  time: e.target.value,
+                },
+              })
+            }
+          />
+        </div>
+      </div>
 
-{/* Assign To */}
-<div className="row mb-3">
-  <div className="col-4 text-end">
-    <label htmlFor="wd-assign-to">Assign to</label>
-  </div>
-  <div className="col-8">
-    <input
-      id="wd-assign-to"
-      className="form-control"
-      type="text"
-      value={localAssignment?.assignTo || "Everyone"}
-      onChange={(e) =>
-        setLocalAssignment({
-          ...localAssignment,
-          assignTo: e.target.value,
-        })
-      }
-    />
-  </div>
-</div>
-
-{/* Due Date */}
-<div className="row mb-3">
-  <div className="col-4 text-end">
-    <label htmlFor="wd-due-date">Due Date</label>
-  </div>
-  <div className="col-8">
-    <input
-      id="wd-due-date"
-      className="form-control"
-      type="date"
-      value={localAssignment?.dueDate?.date || ""}
-      onChange={(e) =>
-        setLocalAssignment({
-          ...localAssignment,
-          dueDate: {
-            ...localAssignment.dueDate,
-            date: e.target.value,
-          },
-        })
-      }
-    />
-    <input
-      id="wd-due-time"
-      className="form-control mt-2"
-      type="time"
-      value={localAssignment?.dueDate?.time || ""}
-      onChange={(e) =>
-        setLocalAssignment({
-          ...localAssignment,
-          dueDate: {
-            ...localAssignment.dueDate,
-            time: e.target.value,
-          },
-        })
-      }
-    />
-  </div>
-</div>
-
-{/* Available From */}
-<div className="row mb-3">
-  <div className="col-4 text-end">
-    <label htmlFor="wd-available-from">Available From</label>
-  </div>
-  <div className="col-8">
-    <input
-      id="wd-available-from-date"
-      className="form-control"
-      type="date"
-      value={localAssignment?.availableDate?.date || ""}
-      onChange={(e) =>
-        setLocalAssignment({
-          ...localAssignment,
-          availableDate: {
-            ...localAssignment.availableDate,
-            date: e.target.value,
-          },
-        })
-      }
-    />
-    <input
-      id="wd-available-from-time"
-      className="form-control mt-2"
-      type="time"
-      value={localAssignment?.availableDate?.time || ""}
-      onChange={(e) =>
-        setLocalAssignment({
-          ...localAssignment,
-          availableDate: {
-            ...localAssignment.availableDate,
-            time: e.target.value,
-          },
-        })
-      }
-    />
-  </div>
-</div>
-
-{/* Available Until */}
-<div className="row mb-3">
-  <div className="col-4 text-end">
-    <label htmlFor="wd-available-until">Available Until</label>
-  </div>
-  <div className="col-8">
-    <input
-      id="wd-available-until-date"
-      className="form-control"
-      type="date"
-      value={localAssignment?.availableUntil?.date || ""}
-      onChange={(e) =>
-        setLocalAssignment({
-          ...localAssignment,
-          availableUntil: {
-            ...localAssignment.availableUntil,
-            date: e.target.value,
-          },
-        })
-      }
-    />
-    <input
-      id="wd-available-until-time"
-      className="form-control mt-2"
-      type="time"
-      value={localAssignment?.availableUntil?.time || ""}
-      onChange={(e) =>
-        setLocalAssignment({
-          ...localAssignment,
-          availableUntil: {
-            ...localAssignment.availableUntil,
-            time: e.target.value,
-          },
-        })
-      }
-    />
-  </div>
-</div>
-
-
-
+      {/* Available Until */}
+      <div className="row mb-3">
+        <div className="col-4 text-end">
+          <label htmlFor="wd-available-until">Available Until</label>
+        </div>
+        <div className="col-8">
+          <input
+            id="wd-available-until-date"
+            className="form-control"
+            type="date"
+            value={localAssignment?.availableUntil?.date || ""}
+            onChange={(e) =>
+              setLocalAssignment({
+                ...localAssignment,
+                availableUntil: {
+                  ...localAssignment.availableUntil,
+                  date: e.target.value,
+                },
+              })
+            }
+          />
+          <input
+            id="wd-available-until-time"
+            className="form-control mt-2"
+            type="time"
+            value={localAssignment?.availableUntil?.time || ""}
+            onChange={(e) =>
+              setLocalAssignment({
+                ...localAssignment,
+                availableUntil: {
+                  ...localAssignment.availableUntil,
+                  time: e.target.value,
+                },
+              })
+            }
+          />
+        </div>
+      </div>
 
       <hr className="text-secondary" />
 
@@ -353,10 +444,7 @@ export default function AssignmentEditor() {
         >
           Cancel
         </button>
-        <button
-          className="btn btn-danger"
-          onClick={handleSave}
-        >
+        <button className="btn btn-danger" onClick={handleSave}>
           Save
         </button>
       </div>
