@@ -28,6 +28,7 @@ export default function Assignments() {
           />
         </div>
         {/* search right      */}
+        {currentUser?.role === "FACULTY" && (
         <div>
           <button className="btn btn-secondary m-1">
             <GoPlus className="fs-4" /> Group
@@ -37,6 +38,7 @@ export default function Assignments() {
             <GoPlus className="fs-4" /> Assignment
           </button>
         </div>
+        )}
       </div>
 
       {/* assignment item list */}
