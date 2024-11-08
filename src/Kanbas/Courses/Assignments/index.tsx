@@ -6,9 +6,11 @@ import { useParams } from "react-router";
 import { BsThreeDotsVertical, BsGripVertical } from "react-icons/bs";
 import AssLessonControlButtons from "./AssLessonControlButtons";
 import { assignments } from "../../Database";
+import { useSelector } from "react-redux";
 
 export default function Assignments() {
   const { cid } = useParams();
+  const { currentUser } = useSelector((state: any) => state.accountReducer);
 
   return (
     <div id="wd-assignments" className="container">
@@ -62,12 +64,18 @@ export default function Assignments() {
                   </div>
 
                   <div className="assignment-info">
-                    <a
-                      className="wd-assignment-link fw-bold text-decoration-none text-dark"
-                      href={`#/Kanbas/Courses/${assignment.course}/Assignments/${assignment._id}`}
-                    >
-                      {assignment.title}
-                    </a>
+                    {currentUser?.role === "FACULTY" ? (
+                      <a
+                        className="wd-assignment-link fw-bold text-decoration-none text-dark"
+                        href={`#/Kanbas/Courses/${assignment.course}/Assignments/${assignment._id}`}
+                      >
+                        {assignment.title}
+                      </a>
+                    ) : (
+                      <span className="fw-bold text-dark">
+                        {assignment.title}
+                      </span>
+                    )}
 
                     <p className="wd-assignment-overview text-muted">
                       <span className="text-danger">Single Module</span> |
