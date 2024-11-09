@@ -111,14 +111,14 @@ export default function Assignments() {
                 {currentUser?.role === "FACULTY" && (
                   <AssLessonControlButtons assignmentId={assignment._id} />
                 )}
-                {currentUser?.role === "FACULTY" && (
+                {/* {currentUser?.role === "FACULTY" && (
                   <button
                     className="btn btn-outline-danger ms-2"
                     onClick={() => dispatch(deleteAssignment(assignment._id))}
                   >
                     Delete
                   </button>
-                )}
+                )} */}
               </div>
             </li>
               ))}

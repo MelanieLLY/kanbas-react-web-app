@@ -1,12 +1,9 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import * as db from "./Database";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  loadEnrollments,
-  enrollCourse,
-  unenrollCourse,
-} from "./enrollmentActions";
+import { loadEnrollments } from "./enrollmentActions";
+
 
 export default function Dashboard({
   courses,
@@ -24,15 +21,13 @@ export default function Dashboard({
   updateCourse: () => void;
 }) {
   const { currentUser } = useSelector((state: any) => state.accountReducer);
-  const enrollments = useSelector(
-    (state: any) => state.enrollmentReducer.enrollments
-  );
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-
-  const [showAllCourses, setShowAllCourses] = useState(false);
-
-  const toggleCourses = () => setShowAllCourses(!showAllCourses);
+  const { enrollments } = db;
+  const dispatch = useDispatch(); 
+  const [showAllCourses, setShowAllCourses] = useState(false); 
+  
+  const toggleCourses = () => {
+    setShowAllCourses(!showAllCourses);
+  };
 
   useEffect(() => {
     if (currentUser?.role === "STUDENT") {
@@ -40,51 +35,22 @@ export default function Dashboard({
     }
   }, [currentUser, dispatch]);
 
-  const handleEnroll = (courseId: string) => {
-    if (currentUser) {
-      dispatch(enrollCourse(currentUser._id, courseId));
-    }
-  };
-
-  const handleUnenroll = (courseId: string) => {
-    if (currentUser) {
-      dispatch(unenrollCourse(currentUser._id, courseId));
-    }
-  };
-
-  const isEnrolled = (courseId: string) =>
-    enrollments.some(
-      (enrollment: any) =>
-        enrollment.user === currentUser._id && enrollment.course === courseId
-    );
-
-  const handleCourseNavigation = (courseId: string) => {
-    if (isEnrolled(courseId) || currentUser?.role === "FACULTY") {
-      navigate(`/Kanbas/Courses/${courseId}/Home`);
-    } else {
-      alert("You must be enrolled in the course to view its content.");
-    }
-  };
-  const handleCourseClick = (courseId: string) => {
-    if (
-      currentUser?.role === "STUDENT" &&
-      !enrollments.some(
-        (enrollment: any) => enrollment.user === currentUser._id && enrollment.course === courseId
-      )
-    ) {
-      alert("You must be enrolled in the course to view its content");
-      return; // 阻止跳转
-    }
-    navigate(`/Kanbas/Courses/${courseId}/Home`);
-  };
   return (
     <div id="wd-dashboard">
       <h1 id="wd-dashboard-title">Dashboard</h1> <hr />
       {currentUser?.role === "STUDENT" && (
-        <button className="btn btn-primary float-end" onClick={toggleCourses}>
+        <button 
+          className="btn btn-primary float-end" 
+          onClick={toggleCourses}
+        >
           {showAllCourses ? "Show Enrolled Courses" : "Show All Courses"}
         </button>
       )}
+
+
+
+
+
       {currentUser?.role === "FACULTY" && (
         <div>
           <h5>
@@ -94,7 +60,8 @@ export default function Dashboard({
               id="wd-add-new-course-click"
               onClick={addNewCourse}
             >
-              Add
+              {" "}
+              Add{" "}
             </button>
             <button
               className="btn btn-warning float-end me-2"
@@ -117,7 +84,7 @@ export default function Dashboard({
               setCourse({ ...course, description: e.target.value })
             }
           />
-          <hr />
+          <hr />{" "}
         </div>
       )}
       <h2 id="wd-dashboard-published">Published Courses ({courses.length})</h2>{" "}
@@ -125,73 +92,34 @@ export default function Dashboard({
       <div id="wd-dashboard-courses" className="row">
         <div className="row row-cols-1 row-cols-md-5 g-4">
           {courses
-            .filter(
-              (course) =>
-                showAllCourses ||
-                enrollments.some(
-                  (enrollment: { user: string; course: string }) =>
-                    enrollment.user === currentUser._id &&
-                    enrollment.course === course._id
-                )
+            .filter((course) =>
+              showAllCourses || enrollments.some(
+                enrollment => enrollment.user === currentUser._id && 
+                              enrollment.course === course._id
+              )
             )
             .map((course) => (
               <div
                 className="wd-dashboard-course col"
                 style={{ width: "300px" }}
-                key={course._id}
               >
                 <div className="card rounded-3 overflow-hidden h-100 d-flex flex-column">
-                <div
-                  className="wd-dashboard-course-link text-decoration-none text-dark"
-                  onClick={() => handleCourseClick(course._id)} // 控制跳转
-                >
-                    <img
-                      src={course.image}
-                      width="100%"
-                      height={160}
-                      alt={course.name}
-                    />
+                  <Link
+                    to={`/Kanbas/Courses/${course._id}/Home`}
+                    className="wd-dashboard-course-link text-decoration-none text-dark"
+                  >
+                    <img src={course.image} width="100%" height={160} />
                     <div className="card-body">
                       <h5 className="wd-dashboard-course-title card-title">
-                        {course.name}
+                        {course.name}{" "}
                       </h5>
                       <p
                         className="wd-dashboard-course-title card-text overflow-y-hidden"
                         style={{ maxHeight: 100 }}
                       >
-                        {course.description}
+                        {course.description}{" "}
                       </p>
-                      <button
-                      className="btn btn-primary mt-2"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleCourseClick(course._id); 
-                      }}
-                    >
-                      Go
-                    </button>
-                      {currentUser?.role === "STUDENT" &&
-                        (isEnrolled(course._id) ? (
-                          <button
-                          className="btn btn-danger ms-2"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleUnenroll(course._id); 
-                          }}
-                        >
-                          Unenroll
-                        </button>
-                        ) : (
-                          <button
-                          className="btn btn-success ms-2"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleEnroll(course._id); // Enroll 逻辑
-                          }}
-                        >
-                          Enroll
-                        </button>
-                        ))}
+                      <button className="btn btn-primary"> Go </button>
                       {currentUser?.role === "FACULTY" && (
                         <>
                           <button
@@ -217,7 +145,7 @@ export default function Dashboard({
                         </>
                       )}
                     </div>
-                  </div>
+                  </Link>
                 </div>
               </div>
             ))}

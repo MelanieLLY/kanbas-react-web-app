@@ -10,7 +10,9 @@ interface AssLessonControlButtonsProps {
   assignmentId: any;
 }
 
-export default function AssLessonControlButtons({ assignmentId }: AssLessonControlButtonsProps) {
+export default function AssLessonControlButtons({
+  assignmentId,
+}: AssLessonControlButtonsProps) {
   const dispatch = useDispatch();
   const { cid } = useParams();
 
@@ -21,9 +23,14 @@ export default function AssLessonControlButtons({ assignmentId }: AssLessonContr
   return (
     <div className="float-end">
       {/* Delete icon with delete functionality */}
-      <FaTrash className="m-1" onClick={handleDelete} />
+      <button className="btn btn-danger m-1" onClick={handleDelete}>
+        <FaTrash />
+      </button>{" "}
       {/* Edit icon with Link to edit page */}
-      <Link to={`/Kanbas/Courses/${cid}/Assignments/${assignmentId}`} className="text-decoration-none">
+      <Link
+        to={`/Kanbas/Courses/${cid}/Assignments/${assignmentId}`}
+        className="btn btn-link text-decoration-none"
+      >
         <FaPencil className="m-1" />
       </Link>
       <GreenCheckmark />

@@ -12,20 +12,18 @@ export const loadEnrollments = (userId: string) => {
   };
 };
 
-export const enrollCourse =
-  (userId: string, courseId: string) => async (dispatch: any) => {
-    await db.enrollUserInCourse(userId, courseId);
-    dispatch({
-      type: ENROLL_COURSE,
-      payload: { userId, courseId },
-    });
+export const enrollCourse = (userId: string, courseId: string) => {
+  db.enrollUserInCourse(userId, courseId); 
+  return {
+    type: ENROLL_COURSE,
+    payload: { userId, courseId },
   };
+};
 
-export const unenrollCourse =
-  (userId: string, courseId: string) => async (dispatch: any) => {
-    await db.unenrollUserFromCourse(userId, courseId);
-    dispatch({
-      type: UNENROLL_COURSE,
-      payload: { userId, courseId },
-    });
+export const unenrollCourse = (userId: string, courseId: string) => {
+  db.unenrollUserFromCourse(userId, courseId);
+  return {
+    type: UNENROLL_COURSE,
+    payload: { userId, courseId },
   };
+};
