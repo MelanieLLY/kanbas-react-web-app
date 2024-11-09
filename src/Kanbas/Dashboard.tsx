@@ -64,7 +64,6 @@ export default function Dashboard({
     } else {
       alert("You must be enrolled in the course to view its content.");
     }
-    
   };
 
   return (
@@ -115,15 +114,18 @@ export default function Dashboard({
       <div id="wd-dashboard-courses" className="row">
         <div className="row row-cols-1 row-cols-md-5 g-4">
           {courses
-            .filter(
-              (course) =>
+            .filter((course) => {
+              // FACULTY can see all courses, STUDENT sees either enrolled courses or all courses based on showAllCourses
+              return (
+                currentUser?.role === "FACULTY" ||
                 showAllCourses ||
                 enrollments.some(
                   (enrollment: { user: string; course: string }) =>
                     enrollment.user === currentUser._id &&
                     enrollment.course === course._id
                 )
-            )
+              );
+            })
             .map((course) => (
               <div
                 className="wd-dashboard-course col"
@@ -131,10 +133,7 @@ export default function Dashboard({
                 key={course._id}
               >
                 <div className="card rounded-3 overflow-hidden h-100 d-flex flex-column">
-                <div
-                  className="wd-dashboard-course-link text-decoration-none text-dark"
-                  // onClick={() => handleCourseClick(course._id)} // 这个加上的话整个卡片点到都会跳转
-                >
+                  <div className="wd-dashboard-course-link text-decoration-none text-dark">
                     <img
                       src={course.image}
                       width="100%"
