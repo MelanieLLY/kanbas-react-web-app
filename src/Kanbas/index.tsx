@@ -77,9 +77,9 @@ export default function Kanbas() {
             <Route
               path="Courses/:cid/*"
               element={
-                // <ProtectedRoute>
+                 <ProtectedRoute requiresEnrollment>
                   <Courses courses={courses} />
-                // </ProtectedRoute>
+                 </ProtectedRoute>
               }
             />
             <Route path="/Calendar" element={<h1>Calendar</h1>} />

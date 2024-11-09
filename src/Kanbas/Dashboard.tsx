@@ -64,19 +64,9 @@ export default function Dashboard({
     } else {
       alert("You must be enrolled in the course to view its content.");
     }
+    
   };
-  const handleCourseClick = (courseId: string) => {
-    if (
-      currentUser?.role === "STUDENT" &&
-      !enrollments.some(
-        (enrollment: any) => enrollment.user === currentUser._id && enrollment.course === courseId
-      )
-    ) {
-      alert("You must be enrolled in the course to view its content");
-      return; // 阻止跳转
-    }
-    navigate(`/Kanbas/Courses/${courseId}/Home`);
-  };
+
   return (
     <div id="wd-dashboard">
       <h1 id="wd-dashboard-title">Dashboard</h1> <hr />
@@ -143,7 +133,7 @@ export default function Dashboard({
                 <div className="card rounded-3 overflow-hidden h-100 d-flex flex-column">
                 <div
                   className="wd-dashboard-course-link text-decoration-none text-dark"
-                  onClick={() => handleCourseClick(course._id)} // 控制跳转
+                  // onClick={() => handleCourseClick(course._id)} // 这个加上的话整个卡片点到都会跳转
                 >
                     <img
                       src={course.image}
@@ -162,35 +152,26 @@ export default function Dashboard({
                         {course.description}
                       </p>
                       <button
-                      className="btn btn-primary mt-2"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleCourseClick(course._id); 
-                      }}
-                    >
-                      Go
-                    </button>
+                        className="btn btn-primary"
+                        onClick={() => handleCourseNavigation(course._id)}
+                      >
+                        Go
+                      </button>
                       {currentUser?.role === "STUDENT" &&
                         (isEnrolled(course._id) ? (
                           <button
-                          className="btn btn-danger ms-2"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleUnenroll(course._id); 
-                          }}
-                        >
-                          Unenroll
-                        </button>
+                            className="btn btn-danger ms-2"
+                            onClick={() => handleUnenroll(course._id)}
+                          >
+                            Unenroll
+                          </button>
                         ) : (
                           <button
-                          className="btn btn-success ms-2"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleEnroll(course._id); // Enroll 逻辑
-                          }}
-                        >
-                          Enroll
-                        </button>
+                            className="btn btn-success ms-2"
+                            onClick={() => handleEnroll(course._id)}
+                          >
+                            Enroll
+                          </button>
                         ))}
                       {currentUser?.role === "FACULTY" && (
                         <>
