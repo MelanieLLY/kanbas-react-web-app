@@ -16,19 +16,9 @@ export default function Assignments() {
   const dispatch = useDispatch();
   const { assignments } = useSelector((state: any) => state.assignments); // Getting assignments from Redux state
 
-  const [newAssignmentTitle, setNewAssignmentTitle] = useState(""); // Local state for new assignment title
+ 
 
-  // Handler to add a new assignment
-  const handleAddAssignment = () => {
-    if (newAssignmentTitle.trim() === "") return;
-    dispatch(
-      addAssignment({
-        title: newAssignmentTitle,
-        course: cid,
-      })
-    );
-    setNewAssignmentTitle("");
-  };
+
 
   return (
     <div id="wd-assignments" className="container">
@@ -116,21 +106,21 @@ export default function Assignments() {
                     </p>
                   </div>
 
-                  {/* Control Buttons */}
-                  <div className="ms-auto">
-                  {currentUser?.role === "FACULTY" && (<AssLessonControlButtons />)}
-                    {currentUser?.role === "FACULTY" && (
-                      <button
-                        className="btn btn-outline-danger ms-2"
-                        onClick={() => dispatch(deleteAssignment(assignment._id))}
-                      >
-                        Delete
-                      </button>
-                    )}
-
-
-                  </div>
-                </li>
+              {/* Control Buttons */}
+              <div className="ms-auto">
+                {currentUser?.role === "FACULTY" && (
+                  <AssLessonControlButtons assignmentId={assignment._id} />
+                )}
+                {currentUser?.role === "FACULTY" && (
+                  <button
+                    className="btn btn-outline-danger ms-2"
+                    onClick={() => dispatch(deleteAssignment(assignment._id))}
+                  >
+                    Delete
+                  </button>
+                )}
+              </div>
+            </li>
               ))}
           </ul>
         </div>
