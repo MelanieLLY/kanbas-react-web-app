@@ -18,7 +18,7 @@ export default function Lab4() {
     
   return (
     <div id="wd-lab4" style={{ padding: "20px" }}>
-      <h3>Welcome to Lab 3</h3>
+      <h3>Welcome to Lab 4</h3>
       <ClickEvent />
       <PassingDataOnEvent />
       <PassingFunctions theFunction={sayHello} />
