@@ -12,6 +12,7 @@ const module = {
   description: "Learn the basics of computer science",
   course: "Computer Science",
 };
+
 export default function WorkingWithObjects(app) {
   app.get("/lab5/assignment", (req, res) => {
     res.json(assignment);
@@ -36,5 +37,19 @@ export default function WorkingWithObjects(app) {
     const { newName } = req.params;
     module.name = newName;
     res.json(module);
+  });
+  // 修改分数
+  app.get("/lab5/assignment/score/:score", (req, res) => {
+    const { score } = req.params;
+    assignment.score = parseInt(score);
+    res.json(assignment);
+  });
+
+  // 修改完成状态
+  app.get("/lab5/assignment/completed/:completed", (req, res) => {
+    const { completed } = req.params;
+    console.log("Received completed:", completed);
+    assignment.completed = completed === "true";
+    res.json(assignment);
   });
 }
