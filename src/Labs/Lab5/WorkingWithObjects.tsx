@@ -85,47 +85,61 @@ export default function WorkingWithObjects() {
         defaultValue={module.name}
         onChange={(e) => setModule({ ...module, name: e.target.value })}
       />
-      
 
-    <h4>Modify Assignment Score</h4>
-    <a
-      id="wd-update-assignment-score"
-      className="btn btn-primary  float-end  float-end"
-      href={`${ASSIGNMENT_API_URL}/score/${assignment.score}`}
-    >
-      Update Score
-    </a>
-    <input
-      type="number"
-      className="form-control w-50 mb-2"
-      defaultValue={assignment.score}
-      onChange={(e) =>
-        setAssignment({ ...assignment, score: parseInt(e.target.value) })
-      }
-    />
+      <h4>Modify Assignment Score</h4>
+      <a
+        id="wd-update-assignment-score"
+        className="btn btn-primary  float-end  float-end"
+        href={`${ASSIGNMENT_API_URL}/score/${assignment.score}`}
+      >
+        Update Score
+      </a>
+      <input
+        type="number"
+        className="form-control w-50 mb-2"
+        defaultValue={assignment.score}
+        onChange={(e) =>
+          setAssignment({ ...assignment, score: parseInt(e.target.value) })
+        }
+      />
 
-
-    <h4>Modify Assignment Completion</h4>
-    <input
-      type="checkbox"
-      className="form-check-input me-2"
-      checked={assignment.completed}
-      onChange={(e) => {
-        const newValue = e.target.checked;
-        console.log("New completed value from checkbox:", newValue); // 调试输出
-        setAssignment({ ...assignment, completed: newValue });
-      }}
-    />
-    <a
-      id="wd-update-assignment-completed"
-      className="btn btn-primary"
-      href={`${ASSIGNMENT_API_URL}/completed/${assignment.completed}`}
-    >
-      Update Completed
-    </a>
+      <h4>Modify Assignment Completion</h4>
 
 
-  <hr />
-</div>
+      <div className="form-check form-switch">
+        <input
+          type="checkbox"
+          className="form-check-input"
+          id="assignment-completed"
+          checked={assignment.completed}
+          onChange={(e) => {
+            const newValue = e.target.checked;
+            console.log("New completed value from checkbox:", newValue); // 调试输出
+            setAssignment({ ...assignment, completed: newValue });
+          }}
+        />
+        <label className="form-check-label" htmlFor="assignment-completed">
+          Mark as Completed (I used switch instead of checkbox so it looks more noticable)
+        </label>
+        {assignment.completed ? (
+          <span className="text-success">✔️</span>
+        ) : (
+          <span className="text-muted">❌</span>
+        )}
+      </div>
+      <a
+        id="wd-update-assignment-completed"
+        className="btn btn-primary"
+        href={`${ASSIGNMENT_API_URL}/completed/${assignment.completed}`}
+      >
+        Update Completed
+      </a>
+      <hr />
+
+
+
+
+
+    </div>
   );
 }
