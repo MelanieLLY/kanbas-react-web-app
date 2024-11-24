@@ -54,4 +54,22 @@ export default function WorkingWithArrays(app) {
     }
     res.json(todos); // 返回更新后的数组
   });
+  app.get("/lab5/todos/:id/completed/:completed", (req, res) => {
+    const { id, completed } = req.params; // 获取路径参数
+    const todo = todos.find((t) => t.id === parseInt(id)); // 查找对应任务
+    if (todo) {
+      todo.completed = completed === "true"; // 更新完成状态
+    }
+    res.json(todos); // 返回更新后的数组
+  });
+  app.get("/lab5/todos/:id/description/:description", (req, res) => {
+    const { id, description } = req.params; // 获取路径参数
+    const todo = todos.find((t) => t.id === parseInt(id)); // 查找对应任务
+    if (todo) {
+      todo.description = description; // 更新描述
+    }
+    res.json(todos); // 返回更新后的数组
+  });
+  
+  
 }

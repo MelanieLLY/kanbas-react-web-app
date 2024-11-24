@@ -6,6 +6,8 @@ export default function WorkingWithArrays() {
   const [todo, setTodo] = useState({
     id: "1",
     title: "New Title",
+    description: "New Description",
+    completed: false,
   });
   return (
     <div id="wd-working-with-arrays">
@@ -60,26 +62,98 @@ export default function WorkingWithArrays() {
       />
       <hr />
       <h3>Updating an Item in an Array</h3>
-      {/* 更新任务的链接 */}
-      <a
-        href={`${API}/${todo.id}/title/${todo.title}`}
-        className="btn btn-primary "
-      >
-        Update Todo
-      </a>
-      {/* 输入框：任务 ID */}
-      <input
-        defaultValue={todo.id}
-        className="form-control w-25  me-2"
-        onChange={(e) => setTodo({ ...todo, id: e.target.value })}
-      />
-      {/* 输入框：任务标题 */}
-      <input
-        defaultValue={todo.title}
-        className="form-control w-50 "
-        onChange={(e) => setTodo({ ...todo, title: e.target.value })}
-      />
-      <hr />
+
+      
+            {/* 设置任务 ID */}
+            <div className="mb-4">
+        <label className="form-label">Task ID</label>
+        <input
+          defaultValue={todo.id}
+          className="form-control w-25"
+          onChange={(e) => setTodo({ ...todo, id: e.target.value })}
+        />
+        <small className="text-muted">Enter the Task ID to update its properties</small>
+      </div>
+
+      {/* 更新任务标题 */}
+      <div className="card mb-4">
+        <div className="card-body">
+          <h3 className="card-title">
+            Update Task Title 
+            <small className="text-muted ms-2">(Current ID: {todo.id})</small>
+          </h3>
+          <div className="mb-3">
+            <label className="form-label">Task Title</label>
+            <input
+              defaultValue={todo.title}
+              className="form-control"
+              onChange={(e) => setTodo({ ...todo, title: e.target.value })}
+            />
+          </div>
+          <a
+            href={`${API}/${todo.id}/title/${todo.title}`}
+            className="btn btn-primary"
+          >
+            Update Title
+          </a>
+        </div>
+      </div>
+
+      {/* 更新任务完成状态 */}
+      <div className="card mb-4">
+        <div className="card-body">
+          <h3 className="card-title">
+            Update Task Completed Status
+            <small className="text-muted ms-2">(Current ID: {todo.id})</small>
+          </h3>
+          <div className="form-check mb-3">
+            <input
+              type="checkbox"
+              className="form-check-input"
+              id="completed-checkbox"
+              checked={todo.completed}
+              onChange={(e) =>
+                setTodo({ ...todo, completed: e.target.checked })
+              }
+            />
+            <label htmlFor="completed-checkbox" className="form-check-label">
+              Task Completed
+            </label>
+          </div>
+          <a
+            href={`${API}/${todo.id}/completed/${todo.completed}`}
+            className="btn btn-primary"
+          >
+            Update Completed Status
+          </a>
+        </div>
+      </div>
+
+      {/* 更新任务描述 */}
+      <div className="card mb-4">
+        <div className="card-body">
+          <h3 className="card-title">
+            Update Task Description
+            <small className="text-muted ms-2">(Current ID: {todo.id})</small>
+          </h3>
+          <div className="mb-3">
+            <label className="form-label">Task Description</label>
+            <input
+              defaultValue={todo.description}
+              className="form-control"
+              onChange={(e) =>
+                setTodo({ ...todo, description: e.target.value })
+              }
+            />
+          </div>
+          <a
+            href={`${API}/${todo.id}/description/${todo.description}`}
+            className="btn btn-primary"
+          >
+            Update Description
+          </a>
+        </div>
+      </div>
     </div>
   );
 }
