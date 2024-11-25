@@ -10,7 +10,6 @@ export default function WorkingWithArrays(app) {
 
   app.get("/lab5/todos", (req, res) => {
     const { completed } = req.query;
-    console.log("Query parameter completed:", completed);
 
     if (completed !== undefined) {
       const completedBool = completed === "true";
@@ -70,6 +69,10 @@ export default function WorkingWithArrays(app) {
     }
     res.json(todos);
   });
-  
+  app.post("/lab5/todos", (req, res) => {
+    const newTodo = { ...req.body, id: new Date().getTime() }; 
+    todos.push(newTodo);
+    res.json(newTodo); 
+  });
   
 }
