@@ -64,7 +64,6 @@ export default function WorkingWithArrays() {
       <h3>Updating an Item in an Array</h3>
 
       
-            {/* 设置任务 ID */}
             <div className="mb-4">
         <label className="form-label">Task ID</label>
         <input
@@ -75,7 +74,6 @@ export default function WorkingWithArrays() {
         <small className="text-muted">Enter the Task ID to update its properties</small>
       </div>
 
-      {/* 更新任务标题 */}
       <div className="card mb-4">
         <div className="card-body">
           <h3 className="card-title">
@@ -99,7 +97,6 @@ export default function WorkingWithArrays() {
         </div>
       </div>
 
-      {/* 更新任务完成状态 */}
       <div className="card mb-4">
         <div className="card-body">
           <h3 className="card-title">
@@ -129,7 +126,6 @@ export default function WorkingWithArrays() {
         </div>
       </div>
 
-      {/* 更新任务描述 */}
       <div className="card mb-4">
         <div className="card-body">
           <h3 className="card-title">

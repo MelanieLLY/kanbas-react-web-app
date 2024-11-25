@@ -47,28 +47,28 @@ export default function WorkingWithArrays(app) {
     res.json(todo); 
   });
   app.get("/lab5/todos/:id/title/:title", (req, res) => {
-    const { id, title } = req.params; // 从路径参数获取 ID 和新标题
-    const todo = todos.find((t) => t.id === parseInt(id)); // 查找对应任务
+    const { id, title } = req.params;
+    const todo = todos.find((t) => t.id === parseInt(id)); 
     if (todo) {
-      todo.title = title; // 更新任务标题
+      todo.title = title; 
     }
-    res.json(todos); // 返回更新后的数组
+    res.json(todos); 
   });
   app.get("/lab5/todos/:id/completed/:completed", (req, res) => {
-    const { id, completed } = req.params; // 获取路径参数
-    const todo = todos.find((t) => t.id === parseInt(id)); // 查找对应任务
+    const { id, completed } = req.params; 
+    const todo = todos.find((t) => t.id === parseInt(id)); 
     if (todo) {
-      todo.completed = completed === "true"; // 更新完成状态
+      todo.completed = completed === "true";
     }
-    res.json(todos); // 返回更新后的数组
+    res.json(todos); 
   });
   app.get("/lab5/todos/:id/description/:description", (req, res) => {
-    const { id, description } = req.params; // 获取路径参数
-    const todo = todos.find((t) => t.id === parseInt(id)); // 查找对应任务
+    const { id, description } = req.params; 
+    const todo = todos.find((t) => t.id === parseInt(id)); 
     if (todo) {
-      todo.description = description; // 更新描述
+      todo.description = description; 
     }
-    res.json(todos); // 返回更新后的数组
+    res.json(todos);
   });
   
   
