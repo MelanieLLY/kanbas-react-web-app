@@ -2,13 +2,17 @@ import express from 'express';
 import Hello from './Hello.js';
 import Lab5 from './Lab5/index.js';
 import cors from "cors";
+import userController from "./Kanbas/Users/controller.js"; 
+import UserRoutes from "./Kanbas/Users/routes.js";
 
 const app = express();
 app.use(cors()); 
 app.use(express.json());
+app.use("/users", userController);
+
 Hello(app);
 Lab5(app);
-
+UserRoutes(app);
 const PORT = process.env.PORT || 4000;
 
 
