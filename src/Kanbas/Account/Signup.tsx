@@ -1,33 +1,50 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import * as client from "./client";
+import { useDispatch } from "react-redux";
+import { setCurrentUser } from "./reducer";
+
 export default function Signup() {
+  const [user, setUser] = useState<any>({});
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [error, setError] = useState<string | null>(null); 
+
+  const signup = async () => {
+    try {
+      const currentUser = await client.signup(user);
+      dispatch(setCurrentUser(currentUser));
+      navigate("/Kanbas/Account/Profile");
+    } catch (err: any) {
+      console.error("Signup error:", err.response?.data || err.message); // 捕获错误
+      setError(err.response?.data?.message || "Sign up failed. Please try again.");
+    }
+  };
+  
+
   return (
     <div id="wd-signup-screen">
       <h3>Sign up</h3>
+      {error && <div className="alert alert-danger">{error}</div>}
       <input
-        id="wd-username"
+        value={user.username}
+        onChange={(e) => setUser({ ...user, username: e.target.value })}
+        className="wd-username form-control mb-2"
         placeholder="username"
-        className="form-control mb-2"
       />
       <input
-        id="wd-password"
+        value={user.password}
+        onChange={(e) => setUser({ ...user, password: e.target.value })}
+        type="password"
+        className="wd-password form-control mb-2"
         placeholder="password"
-        type="password"
-        className="form-control mb-2"
       />
-      <input
-        id="wd-verify-password"
-        placeholder="verify password"
-        type="password"
-        className="form-control mb-2"
-      />
-      <Link
-        id="wd-signup-btn"
-        to="/Kanbas/Account/Profile"
-        className="btn btn-primary w-100 mb-2"
+      <button
+        onClick={signup}
+        className="wd-signup-btn btn btn-primary mb-2 w-100"
       >
         Sign up
-      </Link>
+      </button>
       <Link
         id="wd-signin-link"
         to="/Kanbas/Account/Signin"
@@ -36,12 +53,11 @@ export default function Signup() {
         Sign in
       </Link>
 
-      {/* 
-      <input placeholder="username" /><br/>
-      <input placeholder="password" type="password" /><br/>
-      <input placeholder="verify password" type="password" /><br/>
-      <Link to="/Kanbas/Account/Profile" > Sign up </Link><br />
-      <Link to="/Kanbas/Account/Signin" >Sign in</Link> */}
+
     </div>
   );
 }
+function setError(arg0: any) {
+  throw new Error("Function not implemented.");
+}
+
