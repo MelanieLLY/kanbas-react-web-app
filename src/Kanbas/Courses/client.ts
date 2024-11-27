@@ -7,3 +7,13 @@ export const fetchAllCourses = async () => {
   const { data } = await axios.get(COURSES_API);
   return data;
 };
+export const deleteCourse = async (id: string) => {
+  const { data } = await axios.delete(`${COURSES_API}/${id}`);
+  return data;
+};
+
+
+export const updateCourse = async (course: any) => {
+  const { data } = await axios.put(`${COURSES_API}/${course._id}`, course); // 发送 PUT 请求
+  return data; // 返回响应数据
+};

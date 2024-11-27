@@ -5,12 +5,12 @@ import Lab2 from "./Lab2";
 import Lab3 from "./Lab3";
 import Lab4 from "./Lab4";
 import store from "./store";
-import { Provider } from "react-redux";
+import { Provider } from "react-redux"; 
 import Lab5 from "./Lab5";
 
 export default function Labs(){
     return (
-        <Provider store={store}>
+        // <Provider store={store}>
         <div className="container-fluid">
             <h1>Collection for Labs</h1>
 
@@ -29,6 +29,6 @@ export default function Labs(){
                 <Route path="/Lab5" element={<Lab5 />} />
             </Routes>
         </div>
-        </Provider>
+        // </Provider>
     )
 }

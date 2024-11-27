@@ -1,17 +1,11 @@
 import { Link, useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  loadEnrollments,
-  enrollCourse,
-  unenrollCourse,
-} from "./enrollmentActions";
 
 export default function Dashboard({
   courses,
   course,
   setCourse,
-  
   addNewCourse,
   deleteCourse,
   updateCourse,
@@ -24,46 +18,14 @@ export default function Dashboard({
   updateCourse: () => void;
 }) {
   const { currentUser } = useSelector((state: any) => state.accountReducer);
-  const enrollments = useSelector(
-    (state: any) => state.enrollmentReducer.enrollments
-  );
-  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const [showAllCourses, setShowAllCourses] = useState(false);
 
   const toggleCourses = () => setShowAllCourses(!showAllCourses);
 
-  useEffect(() => {
-    if (currentUser?.role === "STUDENT") {
-      dispatch(loadEnrollments(currentUser._id));
-    }
-  }, [currentUser, dispatch]);
-
-  const handleEnroll = (courseId: string) => {
-    if (currentUser) {
-      dispatch(enrollCourse(currentUser._id, courseId));
-    }
-  };
-
-  const handleUnenroll = (courseId: string) => {
-    if (currentUser) {
-      dispatch(unenrollCourse(currentUser._id, courseId));
-    }
-  };
-
-  const isEnrolled = (courseId: string) =>
-    enrollments.some(
-      (enrollment: any) =>
-        enrollment.user === currentUser._id && enrollment.course === courseId
-    );
-
   const handleCourseNavigation = (courseId: string) => {
-    if (isEnrolled(courseId) || currentUser?.role === "FACULTY") {
-      navigate(`/Kanbas/Courses/${courseId}/Home`);
-    } else {
-      alert("You must be enrolled in the course to view its content.");
-    }
+    navigate(`/Kanbas/Courses/${courseId}/Home`);
   };
 
   return (
@@ -114,18 +76,14 @@ export default function Dashboard({
       <div id="wd-dashboard-courses" className="row">
         <div className="row row-cols-1 row-cols-md-5 g-4">
           {courses
-            .filter((course) => {
-              // FACULTY can see all courses, STUDENT sees either enrolled courses or all courses based on showAllCourses
-              return (
-                currentUser?.role === "FACULTY" ||
-                showAllCourses ||
-                enrollments.some(
-                  (enrollment: { user: string; course: string }) =>
-                    enrollment.user === currentUser._id &&
-                    enrollment.course === course._id
-                )
-              );
-            })
+            // .filter((course) => {
+            //   // 教师用户可以看到所有课程
+            //   if (currentUser?.role === "FACULTY") {
+            //     return true;
+            //   }
+            //   // 学生用户直接显示服务器返回的课程数据
+            //   return true; // 这里保留以防日后扩展
+            // })
             .map((course) => (
               <div
                 className="wd-dashboard-course col"
@@ -156,22 +114,6 @@ export default function Dashboard({
                       >
                         Go
                       </button>
-                      {currentUser?.role === "STUDENT" &&
-                        (isEnrolled(course._id) ? (
-                          <button
-                            className="btn btn-danger ms-2"
-                            onClick={() => handleUnenroll(course._id)}
-                          >
-                            Unenroll
-                          </button>
-                        ) : (
-                          <button
-                            className="btn btn-success ms-2"
-                            onClick={() => handleEnroll(course._id)}
-                          >
-                            Enroll
-                          </button>
-                        ))}
                       {currentUser?.role === "FACULTY" && (
                         <>
                           <button

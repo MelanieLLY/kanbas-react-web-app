@@ -1,4 +1,6 @@
 import * as dao from "./dao.js";
+import * as courseDao from "../Courses/dao.js";
+import * as enrollmentsDao from "../Enrollments/dao.js";
 
 export default function UserRoutes(app) {
   const createUser = (req, res) => {};
@@ -54,8 +56,7 @@ export default function UserRoutes(app) {
       res.status(401).json({ message: "Unable to login. Try again later." });
     }
   };
-  
-  app.post("/api/users/signin", signin);
+
   const signout = (req, res) => {
     req.session.destroy();
     res.sendStatus(200);
@@ -69,8 +70,26 @@ export default function UserRoutes(app) {
     }
     res.json(currentUser);
   };
-
-  app.post("/api/users", createUser);
+  const findCoursesForEnrolledUser = (req, res) => {
+    let { userId } = req.params;
+    if (userId === "current") {
+      const currentUser = req.session["currentUser"];
+      if (!currentUser) {
+        res.sendStatus(401);
+        return;
+      }
+      userId = currentUser._id;
+    }
+    const courses = courseDao.findCoursesForEnrolledUser(userId);
+    res.json(courses);
+  };
+  const createCourse = (req, res) => {
+    const currentUser = req.session["currentUser"]; // 获取当前用户
+    const newCourse = courseDao.createCourse(req.body); // 创建新课程
+    enrollmentsDao.enrollUserInCourse(currentUser._id, newCourse._id); // 关联用户与课程
+    res.json(newCourse); // 返回新课程数据
+  };
+  app.get("/api/users/:userId/courses", findCoursesForEnrolledUser);
   app.get("/api/users", findAllUsers);
   app.get("/api/users/:userId", findUserById);
   app.put("/api/users/:userId", updateUser);
@@ -79,4 +98,7 @@ export default function UserRoutes(app) {
   app.post("/api/users/signin", signin);
   app.post("/api/users/signout", signout);
   app.post("/api/users/profile", profile);
+  app.post("/api/users/signin", signin);
+  app.post("/api/users/current/courses", createCourse);
+  app.post("/api/users", createUser);
 }

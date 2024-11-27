@@ -15,7 +15,9 @@ export default[
   { "_id": "14", "user": "905", "course": "BI112" },
   { "_id": "15", "user": "906", "course": "BI112" },
   { "_id": "16", "user": "907", "course": "CS210" },
-  { "_id": "17", "user": "908", "course": "GE117" }
+  { "_id": "17", "user": "908", "course": "GE117" },
+  { "_id": "18", "user": "678", "course": "GE117" },
+
 ]
 
   
