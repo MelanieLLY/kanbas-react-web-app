@@ -1,13 +1,13 @@
 import { FaPlusCircle, FaSearch, FaBook, FaPlus } from "react-icons/fa";
 import { GoPlus } from "react-icons/go";
 import { MdArrowDropDown } from "react-icons/md";
-import { useParams } from "react-router";
 import { BsThreeDotsVertical, BsGripVertical } from "react-icons/bs";
 import AssLessonControlButtons from "./AssLessonControlButtons";
 import { useDispatch, useSelector } from "react-redux";
-import { addAssignment, deleteAssignment } from "../Assignments/reducer"; // Updated import for deleteAssignment
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { setAssignments, deleteAssignment } from "./reducer";
+import * as assignmentsClient from "./client"; // 引入后端 API
 
 // Main Assignment component
 export default function Assignments() {
@@ -16,7 +16,28 @@ export default function Assignments() {
   const dispatch = useDispatch();
   const { assignments } = useSelector((state: any) => state.assignments); // Getting assignments from Redux state
 
- 
+
+  const [searchTerm, setSearchTerm] = useState(""); // 搜索框状态
+
+  // 加载作业列表
+  useEffect(() => {
+    const fetchAssignments = async () => {
+      const allAssignments = await assignmentsClient.findAllAssignments(); // 调用 API 获取所有作业
+      const courseAssignments = allAssignments.filter(
+        (assignment: any) => assignment.course === cid // 筛选出当前课程的作业
+      );
+      dispatch(setAssignments(courseAssignments)); // 更新 Redux 状态
+    };
+
+    fetchAssignments(); // 加载作业
+  }, [cid, dispatch]);
+
+  // 删除作业
+  const handleDelete = async (assignmentId: string) => {
+    await assignmentsClient.deleteAssignment(assignmentId); // 调用 API 删除作业
+    dispatch(deleteAssignment(assignmentId)); // 从 Redux 状态中移除
+  };
+
 
 
 
@@ -34,97 +55,75 @@ export default function Assignments() {
             className="form-control border-start-0"
             style={{ boxShadow: "none" }}
             placeholder="Search for Assignments"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)} // 更新搜索状态
           />
         </div>
 
-        {/* Conditional rendering for FACULTY role */}
-        {currentUser?.role === "FACULTY" && (
-          <Link
-            to={`/Kanbas/Courses/${cid}/Assignments/Editor`}
-            className="btn btn-primary"
-          >
+  {/* 添加作业按钮，仅教师角色可见 */}
+  {currentUser?.role === "FACULTY" && (
+          <Link to={`/Kanbas/Courses/${cid}/Assignments/Editor`} className="btn btn-primary">
             <FaPlusCircle /> Add Assignment
           </Link>
         )}
       </div>
 
+
       {/* Assignment Item List */}
-      <div className="d-flex justify-content-between align-items-center p-2 bg-white border border-gray">
-        <div id="wd-assignments" className="container p-0">
-          <ul id="wd-assignment-list" className="list-group p-0 m-0">
-            {assignments
-              .filter((assignment: any) => assignment.course === cid)
-              .map((assignment: any) => (
-                <li
-                  key={assignment._id}
-                  className="wd-assignment-list-item d-flex align-items-center border-bottom border-gray"
-                >
-                  <div
-                    style={{
-                      backgroundColor: "green",
-                      width: "3px",
-                      height: "80px",
-                    }}
-                  ></div>
-
-                  <div className="assignment-icon d-flex align-items-center me-3">
-                    <BsGripVertical className="me-2 fs-4" />
-                    <FaBook className="fs-4 text-success" />
-                  </div>
-
-                  {/* Display Assignment Title and Info */}
-                  <div className="assignment-info">
-                    {currentUser?.role === "FACULTY" ? (
-                      <a
-                        className="wd-assignment-link fw-bold text-decoration-none text-dark"
-                        href={`#/Kanbas/Courses/${assignment.course}/Assignments/${assignment._id}`}
-                      >
-                        {assignment.title}
-                      </a>
-                    ) : (
-                      <span className="fw-bold text-dark">
-                        {assignment.title}
-                      </span>
-                    )}
-
-                    {/* Assignment Details */}
-                    <p className="wd-assignment-overview text-muted">
-                      <span className="text-danger">Single Module</span> |
-                      <strong> Not available until:</strong>{" "}
-                      <span>
-                        {typeof assignment.availableDate === "object"
-                          ? `${assignment.availableDate.date} ${assignment.availableDate.time}`
-                          : "TBD"}
-                      </span>{" "}
-                      |<strong> Due:</strong>{" "}
-                      <span>
-                        {typeof assignment.dueDate === "object"
-                          ? `${assignment.dueDate.date} ${assignment.dueDate.time}`
-                          : "TBD"}
-                      </span>{" "}
-                      | {assignment.points || 100} pts
-                    </p>
-                  </div>
-
-              {/* Control Buttons */}
-              <div className="ms-auto">
-                {currentUser?.role === "FACULTY" && (
-                  <AssLessonControlButtons assignmentId={assignment._id} />
-                )}
-                {/* {currentUser?.role === "FACULTY" && (
-                  <button
-                    className="btn btn-outline-danger ms-2"
-                    onClick={() => dispatch(deleteAssignment(assignment._id))}
-                  >
-                    Delete
-                  </button>
-                )} */}
+        {/* 作业列表 */}
+        <ul id="wd-assignment-list" className="list-group p-0 m-0">
+        {assignments
+          .filter((assignment: any) =>
+            assignment.title.toLowerCase().includes(searchTerm.toLowerCase()) // 根据搜索内容筛选
+          )
+          .map((assignment: any) => (
+            <li
+              key={assignment._id}
+              className="wd-assignment-list-item d-flex align-items-center border-bottom"
+            >
+              <div style={{ backgroundColor: "green", width: "3px", height: "80px" }}></div>
+              <div className="assignment-icon d-flex align-items-center me-3">
+                <BsGripVertical className="me-2 fs-4" />
+                <FaBook className="fs-4 text-success" />
               </div>
+              <div className="assignment-info">
+                {currentUser?.role === "FACULTY" ? (
+                  <Link
+                    className="wd-assignment-link fw-bold text-decoration-none text-dark"
+                    to={`/Kanbas/Courses/${assignment.course}/Assignments/${assignment._id}`}
+                  >
+                    {assignment.title}
+                  </Link>
+                ) : (
+                  <span className="fw-bold text-dark">{assignment.title}</span>
+                )}
+                 <p className="wd-assignment-overview text-muted">
+            <span className="text-danger">Single Module</span> |{" "}
+            <strong>Not available until:</strong>{" "}
+            {assignment.availableDate
+              ? `${assignment.availableDate.date} ${assignment.availableDate.time}`
+              : "TBD"}{" "}
+            | <strong>Due:</strong>{" "}
+            {assignment.dueDate
+              ? `${assignment.dueDate.date} ${assignment.dueDate.time}`
+              : "TBD"}{" "}
+            | {assignment.points || 100} pts
+          </p>
+              </div>
+
+              {/* 删除按钮，仅教师角色可见 */}
+              {currentUser?.role === "FACULTY" && (
+                <button
+                  className="btn btn-outline-danger ms-2"
+                  onClick={() => handleDelete(assignment._id)}
+                >
+                  Delete
+                </button>
+              )}
             </li>
-              ))}
-          </ul>
-        </div>
-      </div>
-    </div>
-  );
+                ))}
+                </ul>
+              </div>
+            );
+          
 }

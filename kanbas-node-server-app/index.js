@@ -7,6 +7,8 @@ import Lab5 from './Lab5/index.js';
 import userController from "./Kanbas/Users/controller.js";
 import UserRoutes from "./Kanbas/Users/routes.js";
 import CourseRoutes from "./Kanbas/Courses/routes.js";
+import ModuleRoutes from "./Kanbas/Modules/routes.js";
+import AssignmentRoutes from "./Kanbas/Assignments/routes.js"; // 导入 Assignments 路由
 
 const app = express();
 
@@ -43,6 +45,8 @@ Hello(app);
 Lab5(app); 
 UserRoutes(app); // 用户相关的 API，比如登录、注册等
 CourseRoutes(app);
+ModuleRoutes(app);
+AssignmentRoutes(app); // 注册 Assignments 路由
 
 // 启动服务器并监听指定端口
 const PORT = process.env.PORT || 4000;

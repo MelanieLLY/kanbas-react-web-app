@@ -17,3 +17,13 @@ export const updateCourse = async (course: any) => {
   const { data } = await axios.put(`${COURSES_API}/${course._id}`, course); // 发送 PUT 请求
   return data; // 返回响应数据
 };
+
+export const findModulesForCourse = async (courseId: string) => {
+  const response = await axios
+    .get(`${COURSES_API}/${courseId}/modules`);
+  return response.data;
+};
+export const createModuleForCourse = async (courseId: string, module: any) => {
+  const response = await axios.post(`${COURSES_API}/${courseId}/modules`, module); // 发送 POST 请求
+  return response.data; // 返回新模块数据
+};

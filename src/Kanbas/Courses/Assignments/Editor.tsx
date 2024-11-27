@@ -2,6 +2,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { addAssignment, updateAssignment } from "../Assignments/reducer"; 
+import * as assignmentsClient from "./client"; // 引入后端 API
 
 export default function AssignmentEditor() {
   const { aid, cid } = useParams();
@@ -41,11 +42,14 @@ export default function AssignmentEditor() {
   //   return <div>Assignment not found</div>;
   // }
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (aid) {
-      dispatch(updateAssignment(localAssignment));
+      const updatedAssignment = await assignmentsClient.updateAssignment(aid, localAssignment);
+      dispatch(updateAssignment(updatedAssignment));
     } else {
-      dispatch(addAssignment(localAssignment));
+      const newAssignment = await assignmentsClient.createAssignment(localAssignment);
+      console.log("New Assignment Created:", newAssignment); // 添加调试日志
+      dispatch(addAssignment(newAssignment));
     }
     navigate(`/Kanbas/Courses/${cid}/Assignments`);
   };
