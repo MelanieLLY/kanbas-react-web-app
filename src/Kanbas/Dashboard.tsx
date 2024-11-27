@@ -1,5 +1,4 @@
 import { Link, useNavigate } from "react-router-dom";
-import * as db from "./Database";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -12,6 +11,7 @@ export default function Dashboard({
   courses,
   course,
   setCourse,
+  
   addNewCourse,
   deleteCourse,
   updateCourse,

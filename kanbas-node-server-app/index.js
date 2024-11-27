@@ -6,6 +6,7 @@ import Hello from './Hello.js';
 import Lab5 from './Lab5/index.js';
 import userController from "./Kanbas/Users/controller.js";
 import UserRoutes from "./Kanbas/Users/routes.js";
+import CourseRoutes from "./Kanbas/Courses/routes.js";
 
 const app = express();
 
@@ -41,6 +42,7 @@ app.use("/users", userController); // 用于处理 /users 页面相关的功能
 Hello(app); 
 Lab5(app); 
 UserRoutes(app); // 用户相关的 API，比如登录、注册等
+CourseRoutes(app);
 
 // 启动服务器并监听指定端口
 const PORT = process.env.PORT || 4000;
