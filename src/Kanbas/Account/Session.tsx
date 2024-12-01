@@ -13,16 +13,24 @@ export default function Session({ children }: { children: any }) {
       const currentUser = await client.profile();
       console.log("Session - Fetched profile:", currentUser);
       if (currentUser) {
-        dispatch(setCurrentUser(currentUser));
-      }
+        localStorage.setItem("currentUser", JSON.stringify(currentUser));
+        dispatch(setCurrentUser(currentUser));      }
     } catch (err: any) {
       console.error("Session - Error fetching profile:", err.response?.data || err.message);
+      localStorage.removeItem("currentUser");
+
     }
     setPending(false);
   };
   
   useEffect(() => {
-    fetchProfile();
+    const savedUser = localStorage.getItem("currentUser");
+    if (savedUser) {
+      dispatch(setCurrentUser(JSON.parse(savedUser)));
+      setPending(false);
+    } else {
+      fetchProfile();
+    }
   }, []);
 
   if (pending) {

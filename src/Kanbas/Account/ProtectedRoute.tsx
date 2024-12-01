@@ -1,6 +1,7 @@
 import { useSelector } from "react-redux";
 import { Navigate, useParams, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { setCurrentUser } from "./reducer";
 
 export default function ProtectedRoute({
   children,
@@ -15,11 +16,19 @@ export default function ProtectedRoute({
   const params = useParams();
   const location = useLocation();
   const [shouldNavigate, setShouldNavigate] = useState(false);
-  console.log("Debug - useParams:", cid);
+  // console.log("Debug - useParams:", cid);
   console.log("ProtectedRoute Debug - useParams output:", params); // 打印完整参数对象
   console.log("ProtectedRoute Debug - currentCourseId (cid):", cid);
   console.log("Debug - Location Pathname before useEffect:", location.pathname);
 
+
+  useEffect(() => {
+    // 这次改了这里 - 从 localStorage 获取用户信息
+    const savedUser = localStorage.getItem("currentUser");
+    if (!currentUser && savedUser) {
+      dispatch(setCurrentUser(JSON.parse(savedUser)));
+    }
+  }, [currentUser]);
 
   useEffect(() => {
     console.log("ProtectedRoute Debug - enrollments:", enrollments);
@@ -55,3 +64,7 @@ export default function ProtectedRoute({
 
   return children;
 }
+function dispatch(arg0: any) {
+  throw new Error("Function not implemented.");
+}
+

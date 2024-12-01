@@ -63,6 +63,6 @@ export const createCourse = async (course: any) => {
 };
 
 export const findAllCourses = async () => {
-  const response = await axios.get(`${COURSES_API}`);
+  const response = await axiosWithCredentials.get(`${COURSES_API}`);
   return response.data;
 };
