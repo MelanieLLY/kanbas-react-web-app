@@ -8,18 +8,19 @@ export default function Session({ children }: { children: any }) {
   const dispatch = useDispatch();
 
   const fetchProfile = async () => {
+    console.log("Session - Fetching profile...");
     try {
       const currentUser = await client.profile();
-      console.log("Profile fetch response:", currentUser); // 调试响应
+      console.log("Session - Fetched profile:", currentUser);
       if (currentUser) {
         dispatch(setCurrentUser(currentUser));
       }
     } catch (err: any) {
-      console.error("Error fetching profile:", err.response?.data || err.message); // 捕获详细错误
+      console.error("Session - Error fetching profile:", err.response?.data || err.message);
     }
-    setPending(false); 
+    setPending(false);
   };
-
+  
   useEffect(() => {
     fetchProfile();
   }, []);

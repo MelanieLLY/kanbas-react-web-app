@@ -14,6 +14,9 @@ import ProtectedRoute from "./Account/ProtectedRoute";
 import Session from "./Account/Session";
 import * as userClient from "./Account/client";
 import * as courseClient from "./Courses/client";
+import { useDispatch } from "react-redux";
+import { setEnrollments } from "./Courses/Enrollments/enrollmentActions";
+import * as enrollmentsClient from "./Courses/Enrollments/client";
 
 export default function Kanbas() {
   const [courses, setCourses] = useState<any[]>([]);
@@ -31,6 +34,8 @@ export default function Kanbas() {
     image: "/images/CoursePicDefault.webp",
     buttonText: "Go",
   });
+  const dispatch = useDispatch(); 
+
 
   const { cid } = useParams();
   const location = useLocation();
@@ -42,7 +47,15 @@ export default function Kanbas() {
     const status = await courseClient.deleteCourse(courseId);
     setCourses(courses.filter((course) => course._id !== courseId));
   };
-
+  const fetchCourses = async () => {
+    let courses = [];
+    try {
+      courses = await userClient.findAllCourses();
+    } catch (error) {
+      console.error(error);
+    }
+    setCourses(courses);
+  };
   const updateCourse = async () => {
     await courseClient.updateCourse(course);
     setCourses(
@@ -55,18 +68,16 @@ export default function Kanbas() {
       })
     );
   };
-  const fetchCourses = async () => {
-    let courses = [];
-    try {
-      courses = await userClient.findMyCourses();
-    } catch (error) {
-      console.error(error);
-    }
-    setCourses(courses);
+  const fetchEnrollments = async () => {
+    if (!currentUser) return;
+  
+    const enrollmentsData = await enrollmentsClient.findEnrollmentsByUserId(currentUser._id);
+    dispatch(setEnrollments(enrollmentsData));
   };
-
+  
   useEffect(() => {
     fetchCourses();
+    fetchEnrollments(); // 加载注册信息
   }, [currentUser]);
 
   return (
@@ -101,6 +112,7 @@ export default function Kanbas() {
                 </ProtectedRoute>
               }
             />
+            
             <Route path="/Calendar" element={<h1>Calendar</h1>} />
             <Route path="/Inbox" element={<h1>Inbox</h1>} />
           </Routes>

@@ -1,6 +1,7 @@
 import Database from "../Database/index.js";
 
 export function findAllCourses() {
+  console.log("findAllCourses called. Returning all courses:", Database.courses);
   return Database.courses;
 }
 export function findCoursesForEnrolledUser(userId) {
@@ -9,26 +10,30 @@ export function findCoursesForEnrolledUser(userId) {
   // 查找用户角色
   const user = users.find((u) => u._id === userId);
   if (!user) {
-    // 如果用户不存在，返回空数组
+    console.log(`No user found with ID: ${userId}`);
     return [];
   }
 
   if (user.role === "FACULTY") {
-    // 教师用户：返回所有课程
+    console.log(`User ${userId} is FACULTY. Returning all courses.`);
     return courses;
   }
 
   if (user.role === "STUDENT") {
-    // 学生用户：返回已注册的课程
-    return courses.filter((course) =>
+    const enrolledCourses = courses.filter((course) =>
       enrollments.some(
         (enrollment) =>
           enrollment.user === userId && enrollment.course === course._id
       )
     );
+    console.log(
+      `User ${userId} is STUDENT. Returning enrolled courses:`,
+      enrolledCourses
+    );
+    return enrolledCourses;
   }
 
-  // 未知角色：返回空数组
+  console.warn(`Unknown role for user ${userId}. Returning empty list.`);
   return [];
 }
 

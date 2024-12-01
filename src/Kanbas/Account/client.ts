@@ -1,7 +1,14 @@
 import axios from "axios";
 
-const axiosWithCredentials = axios.create({ withCredentials: true });
 
+
+
+export const REMOTE_SERVER = process.env.REACT_APP_REMOTE_SERVER;
+export const USERS_API = `${REMOTE_SERVER}/api/users`;
+console.log("REMOTE_SERVER:", REMOTE_SERVER); // 打印环境变量的值
+console.log("USERS_API:", USERS_API); // 打印生成的 API 地址
+const axiosWithCredentials = axios.create({ withCredentials: true });
+const COURSES_API = `${REMOTE_SERVER}/api/courses`;
 axiosWithCredentials.interceptors.response.use(
   (response) => response,
   (error) => {
@@ -9,12 +16,6 @@ axiosWithCredentials.interceptors.response.use(
     return Promise.reject(error);
   }
 );
-
-export const REMOTE_SERVER = process.env.REACT_APP_REMOTE_SERVER;
-export const USERS_API = `${REMOTE_SERVER}/api/users`;
-console.log("REMOTE_SERVER:", REMOTE_SERVER); // 打印环境变量的值
-console.log("USERS_API:", USERS_API); // 打印生成的 API 地址
-
 export const signin = async (credentials: any) => {
   const response = await axiosWithCredentials.post(
     `${USERS_API}/signin`,
@@ -56,4 +57,9 @@ export const findMyCourses = async () => {
 export const createCourse = async (course: any) => {
   const { data } = await axiosWithCredentials.post(`${USERS_API}/current/courses`, course);
   return data;
+};
+
+export const findAllCourses = async () => {
+  const response = await axios.get(`${COURSES_API}`);
+  return response.data;
 };
