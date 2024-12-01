@@ -1,13 +1,13 @@
 import axios from "axios";
 
-
-
-
 export const REMOTE_SERVER = process.env.REACT_APP_REMOTE_SERVER;
 export const USERS_API = `${REMOTE_SERVER}/api/users`;
 console.log("REMOTE_SERVER:", REMOTE_SERVER); // 打印环境变量的值
 console.log("USERS_API:", USERS_API); // 打印生成的 API 地址
-const axiosWithCredentials = axios.create({ withCredentials: true });
+const axiosWithCredentials = axios.create({
+  baseURL: process.env.REACT_APP_REMOTE_SERVER,
+  withCredentials: true,
+});
 const COURSES_API = `${REMOTE_SERVER}/api/courses`;
 axiosWithCredentials.interceptors.response.use(
   (response) => response,
@@ -55,7 +55,10 @@ export const findMyCourses = async () => {
 };
 
 export const createCourse = async (course: any) => {
-  const { data } = await axiosWithCredentials.post(`${USERS_API}/current/courses`, course);
+  const { data } = await axiosWithCredentials.post(
+    `${USERS_API}/current/courses`,
+    course
+  );
   return data;
 };
 
