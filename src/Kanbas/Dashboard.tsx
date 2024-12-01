@@ -85,13 +85,12 @@ export default function Dashboard({
   return (
     <div id="wd-dashboard">
       <h1 id="wd-dashboard-title">Dashboard</h1> <hr />
-      {currentUser?.role === "STUDENT" && (
-        <button className="btn btn-primary float-end" onClick={toggleCourses}>
-          {showAllCourses ? "Show Enrolled Courses" : "Show All Courses"}
-        </button>
-      )}
+
+      
+     
       {currentUser?.role === "FACULTY" && (
         <div>
+           
           <h5>
             New Course
             <button
@@ -110,6 +109,7 @@ export default function Dashboard({
             </button>
           </h5>
           <br />
+          
           <input
             value={course.name}
             className="form-control mb-2"
@@ -127,6 +127,9 @@ export default function Dashboard({
       )}
       <h2 id="wd-dashboard-published">
         Published Courses ({filteredCourses.length})
+        <button className="btn btn-primary float-end " onClick={toggleCourses}>
+          {showAllCourses ? "Show Enrolled Courses" : "Show All Courses"}
+        </button>
       </h2>
       <hr />
       <div id="wd-dashboard-courses" className="row">
@@ -156,7 +159,7 @@ export default function Dashboard({
                       {course.description}
                     </p>
                     <button
-                      className="btn btn-primary"
+                      className="btn btn-primary me-2 "
                       onClick={() => handleCourseNavigation(course._id)}
                     >
                       Go
