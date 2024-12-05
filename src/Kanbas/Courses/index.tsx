@@ -13,7 +13,9 @@ export default function Courses({ courses }: { courses: any[] }) {
   const { cid } = useParams();
   const course = courses.find((course) => course._id === cid);
   const { pathname } = useLocation();
-
+  const emptyFetchUsers = async () => {
+    console.log("fetchUsers called but no implementation provided.");
+  };
   return (
     <div id="wd-courses">
       <h2 className="text-danger">
@@ -33,8 +35,8 @@ export default function Courses({ courses }: { courses: any[] }) {
             <Route path="Assignments" element={<Assignments />} />
             <Route path="Assignments/Editor" element={<AssignmentEditor />} />
             <Route path="Assignments/:aid" element={<AssignmentEditor />} />
-            <Route path="People" element={<PeopleTable />} />
-          </Routes>
+            element={<PeopleTable fetchUsers={emptyFetchUsers} />}
+            </Routes>
         </div>
       </div>
     </div>

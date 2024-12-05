@@ -66,6 +66,11 @@ export default function Signin() {
           <li>"username": "black_panther"</li>
           <li>"password": "wakanda123")</li>
         </ul>
+        <li>Sample admin:</li>
+        <ul>
+          <li>"username": "doctor_strange"</li>
+          <li>"password": "strange123"</li>
+        </ul>
       </ul>
     </div>
   );
