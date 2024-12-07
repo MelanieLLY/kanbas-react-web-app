@@ -35,8 +35,8 @@ export default function Courses({ courses }: { courses: any[] }) {
             <Route path="Assignments" element={<Assignments />} />
             <Route path="Assignments/Editor" element={<AssignmentEditor />} />
             <Route path="Assignments/:aid" element={<AssignmentEditor />} />
-            <Route path="People"element={<PeopleTable fetchUsers={emptyFetchUsers} />}/>
-          </Routes>
+            <Route path="People" element={<PeopleTable courseId={cid} />} />
+            </Routes>
         </div>
       </div>
     </div>

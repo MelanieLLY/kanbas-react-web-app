@@ -1,8 +1,9 @@
 import { FaUserCircle } from "react-icons/fa";
-import React, { useEffect } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { Link } from "react-router-dom";
 import PeopleDetails from "./Details";
 import { findUsersForCourse } from "../client"; // 引入从后端获取课程用户数据的函数
+import { findAllUsers } from "../../Account/client"; // 查询所有用户 API
 
 const formatDate = (isoString: string) => {
   try {
@@ -29,12 +30,34 @@ const formatTotalActivity = (activity: string) => {
 
 
 export default function PeopleTable({
-  users = [],
-  fetchUsers, 
+  courseId, // 用于区分是否是课程相关页面
 }: {
-  users?: any[];
-  fetchUsers: () => Promise<void>;
-}) {  return (
+  courseId?: string;
+}) {
+  const [users, setUsers] = useState<any[]>([]);
+
+  // 动态加载用户数据
+  const fetchUsers = useCallback(async () => {
+    try {
+      if (courseId) {
+        // 课程页面：获取课程的用户
+        const fetchedUsers = await findUsersForCourse(courseId);
+        setUsers(fetchedUsers);
+      } else {
+        // 管理员页面：获取所有用户
+        const fetchedUsers = await findAllUsers();
+        setUsers(fetchedUsers);
+      }
+    } catch (error) {
+      console.error("Failed to fetch users:", error);
+    }
+  }, [courseId]);
+
+  useEffect(() => {
+    fetchUsers();
+  }, [fetchUsers]);
+  
+  return (
     
     <div id="wd-people-table">
       <PeopleDetails fetchUsers={fetchUsers} />

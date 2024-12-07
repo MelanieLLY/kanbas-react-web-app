@@ -76,7 +76,7 @@ export default function Users() {
         <FaPlus className="me-2" />
         Users
       </button>
-      <PeopleTable users={users} fetchUsers={fetchUsers} />
+      <PeopleTable  />
     </div>
   );
 }
