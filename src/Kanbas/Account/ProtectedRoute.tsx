@@ -3,7 +3,8 @@ import { Navigate, useParams, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 const axiosWithCredentials = axios.create({ withCredentials: true });
-
+const REMOTE_SERVER = process.env.REACT_APP_REMOTE_SERVER;
+const USERS_API = `${REMOTE_SERVER}/api/users`;
 export default function ProtectedRoute({
   children,
   requiresEnrollment = false,
@@ -24,7 +25,7 @@ export default function ProtectedRoute({
 
       try {
         const response = await axiosWithCredentials.get(
-          `http://localhost:4000/api/users/${currentUser._id}/courses`
+          `${USERS_API}/${currentUser._id}/courses` 
         );
         const courses = response.data;
         const courseIds = courses.map((course: any) => course._id); 
