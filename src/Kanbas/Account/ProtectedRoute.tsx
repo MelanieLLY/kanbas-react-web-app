@@ -1,7 +1,8 @@
 import { useSelector } from "react-redux";
 import { Navigate, useParams, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { setCurrentUser } from "./reducer";
+import axios from "axios";
+const axiosWithCredentials = axios.create({ withCredentials: true });
 
 export default function ProtectedRoute({
   children,
@@ -11,60 +12,55 @@ export default function ProtectedRoute({
   requiresEnrollment?: boolean;
 }) {
   const { currentUser } = useSelector((state: any) => state.accountReducer);
-  const enrollments = useSelector((state: any) => state.enrollmentReducer.enrollments);
-  const { cid } = useParams();
-  const params = useParams();
+  const { cid } = useParams(); 
   const location = useLocation();
   const [shouldNavigate, setShouldNavigate] = useState(false);
-  // console.log("Debug - useParams:", cid);
-  console.log("ProtectedRoute Debug - useParams output:", params); // 打印完整参数对象
-  console.log("ProtectedRoute Debug - currentCourseId (cid):", cid);
-  console.log("Debug - Location Pathname before useEffect:", location.pathname);
-
+  const [userCourses, setUserCourses] = useState<string[]>([]); 
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // 这次改了这里 - 从 localStorage 获取用户信息
-    const savedUser = localStorage.getItem("currentUser");
-    if (!currentUser && savedUser) {
-      dispatch(setCurrentUser(JSON.parse(savedUser)));
-    }
+    const fetchUserCourses = async () => {
+      if (!currentUser) return;
+
+      try {
+        const response = await axiosWithCredentials.get(
+          `http://localhost:4000/api/users/${currentUser._id}/courses`
+        );
+        const courses = response.data;
+        const courseIds = courses.map((course: any) => course._id); 
+        setUserCourses(courseIds);
+      } catch (error) {
+        console.error("Failed to fetch user courses:", error);
+        setUserCourses([]); 
+      } finally {
+        setLoading(false); 
+      }
+    };
+
+    fetchUserCourses();
   }, [currentUser]);
 
   useEffect(() => {
-    console.log("ProtectedRoute Debug - enrollments:", enrollments);
-    console.log("ProtectedRoute Debug - currentUser:", currentUser);
-    if (!Array.isArray(enrollments)) {
-      console.error("ProtectedRoute Error - enrollments is not an array:", enrollments);
-      return;
+    if (!loading && requiresEnrollment && currentUser?.role === "STUDENT" && cid) {
+      const isEnrolled = userCourses.includes(cid);
+      if (!isEnrolled) {
+        alert("You must be enrolled in the course to view its content. Refresh the page if you just enrolled."); 
+      }
+      setShouldNavigate(!isEnrolled); 
     }
-  
-    if (
-      requiresEnrollment &&
-      currentUser?.role === "STUDENT" &&
-      !enrollments.some(
-        (enrollment: any) =>
-          enrollment.user === currentUser._id && enrollment.course === cid
-      )
-    ) {
-      alert("You must be enrolled in the course to view its content.");
-      setShouldNavigate(true);
-    } else {
-      setShouldNavigate(false);
-    }
-  }, [cid, enrollments, currentUser, requiresEnrollment]);
-  
+  }, [loading, requiresEnrollment, currentUser, cid, userCourses]);
+
+  if (loading) {
+    return <div>Loading...</div>; 
+  }
 
   if (!currentUser) {
-    return <Navigate to="/Kanbas/Account/Signin" />;
+    return <Navigate to="#/Kanbas/Account/Signin" />;
   }
 
   if (shouldNavigate) {
-    return <Navigate to="/Kanbas/Dashboard" replace state={{ from: location }} />;
+    window.location.href = "#/Kanbas/Dashboard";     
   }
 
   return children;
 }
-function dispatch(arg0: any) {
-  throw new Error("Function not implemented.");
-}
-

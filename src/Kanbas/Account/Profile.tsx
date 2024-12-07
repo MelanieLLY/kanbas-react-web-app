@@ -26,7 +26,11 @@ export default function Profile() {
 
   };
   useEffect(() => {
-    if (currentUser) setProfile(currentUser);
+    if (currentUser) {
+      const formattedDob = currentUser.dob
+        ? new Date(currentUser.dob).toISOString().split("T")[0] // 格式化为 YYYY-MM-DD
+        : "";
+        setProfile({ ...currentUser, dob: formattedDob })};
   }, [currentUser]);
 
   return (
@@ -83,6 +87,7 @@ export default function Profile() {
             onChange={(e) => setProfile({ ...profile, email: e.target.value })}
           />
           <select
+          value={profile.role || "USER"} 
             onChange={(e) => setProfile({ ...profile, role: e.target.value })}
             className="form-control mb-2"
             id="wd-role"
