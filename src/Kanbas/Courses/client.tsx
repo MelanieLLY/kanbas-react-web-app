@@ -31,3 +31,12 @@ export const createCourse = async (course: any) => {
   const { data } = await axiosWithCredentials.post(COURSES_API, course); // 发送 POST 请求
   return data; // 返回创建的课程数据
 };
+export const findUsersForCourse = async (courseId: string) => {
+  try {
+    const response = await axiosWithCredentials.get(`${COURSES_API}/${courseId}/users`);
+    return response.data; // 返回课程用户数据
+  } catch (error) {
+    console.error("Error fetching users for course:", error);
+    throw error;
+  }
+};

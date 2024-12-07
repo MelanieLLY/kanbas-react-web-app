@@ -2,6 +2,7 @@ import { FaUserCircle } from "react-icons/fa";
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import PeopleDetails from "./Details";
+import { findUsersForCourse } from "../client"; // 引入从后端获取课程用户数据的函数
 
 const formatDate = (isoString: string) => {
   try {
@@ -16,8 +17,6 @@ const formatDate = (isoString: string) => {
     return isoString; // 如果解析失败，直接返回原始字符串
   }
 };
-
-
 const formatTotalActivity = (activity: string) => {
   try {
     const [hours, minutes, seconds] = activity.split(":");
@@ -31,7 +30,7 @@ const formatTotalActivity = (activity: string) => {
 
 export default function PeopleTable({
   users = [],
-  fetchUsers, // 这次要改的：添加 fetchUsers 参数
+  fetchUsers, 
 }: {
   users?: any[];
   fetchUsers: () => Promise<void>;

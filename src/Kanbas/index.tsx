@@ -57,24 +57,7 @@ export default function Kanbas() {
       setCourses(courses.filter((course) => course._id !== courseId)); // 更新课程列表
     }
   };
-  const fetchCourses = async () => {
-    try {
-      const allCourses = await courseClient.fetchAllCourses();
-      const enrolledCourses = await userClient.findCoursesForUser(
-        currentUser._id
-      );
-      const courses = allCourses.map((course: any) => {
-        if (enrolledCourses.find((c: any) => c._id === course._id)) {
-          return { ...course, enrolled: true };
-        } else {
-          return course;
-        }
-      });
-      setCourses(courses);
-    } catch (error) {
-      console.error(error); 
-    }
-  };
+
   const updateCourse = async () => {
     await courseClient.updateCourse(course);
     setCourses(
@@ -92,6 +75,40 @@ export default function Kanbas() {
   
     const enrollmentsData = await enrollmentsClient.findEnrollmentsByUserId(currentUser._id);
     dispatch(setEnrollments(enrollmentsData));
+  };
+  const updateEnrollment = async (courseId: string, enrolled: boolean) => {
+    if (enrolled) {
+      await userClient.enrollIntoCourse(currentUser._id, courseId);
+    } else {
+      await userClient.unenrollFromCourse(currentUser._id, courseId);
+    }
+    setCourses(
+      courses.map((course) => {
+        if (course._id === courseId) {
+          return { ...course, enrolled: enrolled };
+        } else {
+          return course;
+        }
+      })
+    );
+  };
+  const fetchCourses = async () => {
+    try {
+      const allCourses = await courseClient.fetchAllCourses();
+      const enrolledCourses = await userClient.findCoursesForUser(
+        currentUser._id
+      );
+      const courses = allCourses.map((course: any) => {
+        if (enrolledCourses.find((c: any) => c._id === course._id)) {
+          return { ...course, enrolled: true };
+        } else {
+          return course;
+        }
+      });
+      setCourses(courses);
+    } catch (error) {
+      console.error(error); 
+    }
   };
   
   useEffect(() => {
@@ -117,12 +134,12 @@ export default function Kanbas() {
                 <ProtectedRoute>
                   <Dashboard
                     courses={courses}
-                    course={course}
-                    setCourse={setCourse}
+                    course={course} setCourse={setCourse}
                     addNewCourse={addNewCourse}
                     deleteCourse={deleteCourse}
                     updateCourse={updateCourse}
                     enrolling={enrolling} setEnrolling={setEnrolling}
+                    updateEnrollment={updateEnrollment}
                   />
                 </ProtectedRoute>
               }
