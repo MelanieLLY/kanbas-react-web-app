@@ -38,16 +38,23 @@ export default function AssignmentEditor() {
     }
   }, [aid, assignment]); 
 
-  // if (!assignment) {
-  //   return <div>Assignment not found</div>;
-  // }
 
   const handleSave = async () => {
+    const formattedAssignment = {
+      ...localAssignment,
+      course: typeof localAssignment.course === "string"
+        ? localAssignment.course
+        : localAssignment.course.$oid, // 提取字符串
+    };
+    if (!cid) {
+      console.error("Error: Course ID is missing.");
+      return;
+    }
     if (aid) {
-      const updatedAssignment = await assignmentsClient.updateAssignment(aid, localAssignment);
+      const updatedAssignment = await assignmentsClient.updateAssignment(aid, formattedAssignment);
       dispatch(updateAssignment(updatedAssignment));
     } else {
-      const newAssignment = await assignmentsClient.createAssignment(localAssignment);
+      const newAssignment = await assignmentsClient.createAssignment(cid, formattedAssignment);
       console.log("New Assignment Created:", newAssignment); // 添加调试日志
       dispatch(addAssignment(newAssignment));
     }

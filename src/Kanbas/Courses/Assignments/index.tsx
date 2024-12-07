@@ -5,7 +5,7 @@ import { BsThreeDotsVertical, BsGripVertical } from "react-icons/bs";
 import AssLessonControlButtons from "./AssLessonControlButtons";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams, Link } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { setAssignments, deleteAssignment } from "./reducer";
 import * as assignmentsClient from "./client"; // 引入后端 API
 
@@ -22,7 +22,13 @@ export default function Assignments() {
   // 加载作业列表
   useEffect(() => {
     const fetchAssignments = async () => {
-      const allAssignments = await assignmentsClient.findAllAssignments(); // 调用 API 获取所有作业
+      if (!cid) {
+        console.error("Error: Course ID (cid) is missing.");
+        return;
+      }
+      // const allAssignments = await assignmentsClient.findAllAssignments(); // 调用 API 获取所有作业
+      const allAssignments = await assignmentsClient.findAssignmentsForCourse(cid); // 使用 cid
+
       const courseAssignments = allAssignments.filter(
         (assignment: any) => assignment.course === cid // 筛选出当前课程的作业
       );
@@ -37,7 +43,12 @@ export default function Assignments() {
     await assignmentsClient.deleteAssignment(assignmentId); // 调用 API 删除作业
     dispatch(deleteAssignment(assignmentId)); // 从 Redux 状态中移除
   };
-
+  const filteredAssignments = useMemo(() => {
+    return assignments.filter((assignment: any) =>
+      assignment.title.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  }, [assignments, searchTerm]);
+  
 
 
 
