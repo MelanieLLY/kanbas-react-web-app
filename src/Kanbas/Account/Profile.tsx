@@ -16,15 +16,19 @@ export default function Profile() {
   const signout = async () => {
     await client.signout();
     dispatch(setCurrentUser(null)); 
+    localStorage.removeItem("currentUser"); // 清理本地存储
     navigate("/Kanbas/Account/Signin"); 
+  };
+  const updateProfile = async () => {
+    const updatedProfile = await client.updateUser(profile);
+    dispatch(setCurrentUser(updatedProfile));
+    localStorage.setItem("currentUser", JSON.stringify(updatedProfile)); // 更新缓存
+
   };
   useEffect(() => {
     if (currentUser) setProfile(currentUser);
   }, [currentUser]);
-  const updateProfile = async () => {
-    const updatedProfile = await client.updateUser(profile);
-    dispatch(setCurrentUser(updatedProfile));
-  };
+
   return (
     <div id="wd-profile-screen">
       <h3>Profile</h3>

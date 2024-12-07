@@ -22,6 +22,7 @@ export default function Modules() {
   const [moduleName, setModuleName] = useState("");
   const { modules } = useSelector((state: any) => state.modulesReducer);
   const dispatch = useDispatch();
+  
   const createModuleForCourse = async () => {
     if (!cid) return;
     const newModule = { name: moduleName, course: cid };
@@ -40,7 +41,9 @@ export default function Modules() {
     const modules = await coursesClient.findModulesForCourse(cid as string);
     dispatch(setModules(modules));
   };
+  
   useEffect(() => {
+    dispatch(setModules([]));
     fetchModules();
   }, []);
 
@@ -61,7 +64,9 @@ export default function Modules() {
       <br />
 
       <ul id="wd-modules" className="list-group rounded-0">
-        {modules.map((module: any) => (
+      {modules
+          .filter((module: any) => module.course === cid) 
+          .map((module: any) => (
           <li
           key={`module-${module._id}`}
             className="wd-module list-group-item p-0 mb-5 fs-5 border-gray"

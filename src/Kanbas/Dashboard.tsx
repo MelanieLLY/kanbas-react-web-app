@@ -11,11 +11,13 @@ import * as enrollmentsClient from "./Courses/Enrollments/client";
 export default function Dashboard({
   courses,
   course,
-  
+
   setCourse,
   addNewCourse,
   deleteCourse,
   updateCourse,
+  enrolling,
+  setEnrolling,
 }: {
   courses: any[];
   course: any;
@@ -23,6 +25,8 @@ export default function Dashboard({
   addNewCourse: () => void;
   deleteCourse: (course: any) => void;
   updateCourse: () => void;
+  enrolling: boolean;
+  setEnrolling: (enrolling: boolean) => void;
 }) {
   const { currentUser } = useSelector((state: any) => state.accountReducer);
   const enrollments = useSelector(
@@ -84,15 +88,14 @@ export default function Dashboard({
   }, [currentUser, dispatch]);
   return (
     <div id="wd-dashboard">
-      <h1 id="wd-dashboard-title">Dashboard</h1> <hr />
-
-      
-     
+      <h1 id="wd-dashboard-title">Dashboard<button onClick={() => setEnrolling(!enrolling)} className="float-end btn btn-primary" >
+          {enrolling ? "My Courses" : "All Courses"}
+        </button>
+</h1> <hr />
       {currentUser?.role === "FACULTY" && (
         <div>
-           
           <h5>
-            New Course
+            New/Edit Course
             <button
               className="btn btn-primary float-end"
               id="wd-add-new-course-click"
@@ -109,7 +112,7 @@ export default function Dashboard({
             </button>
           </h5>
           <br />
-          
+
           <input
             value={course.name}
             className="form-control mb-2"
@@ -144,13 +147,18 @@ export default function Dashboard({
                 <div className="wd-dashboard-course-link text-decoration-none text-dark">
                   <img
                     src={course.image}
+                    className="card-img-top"
                     width="100%"
                     height={160}
                     alt={course.name}
                   />
                   <div className="card-body">
                     <h5 className="wd-dashboard-course-title card-title">
-                      {course.name}
+                    {enrolling && (
+              <button className={`btn ${ course.enrolled ? "btn-danger" : "btn-success" } float-end`} >
+                {course.enrolled ? "Unenroll" : "Enroll"}
+              </button>
+            )}{course.name}
                     </h5>
                     <p
                       className="wd-dashboard-course-title card-text overflow-y-hidden"
@@ -165,9 +173,7 @@ export default function Dashboard({
                       Go
                     </button>
                     {currentUser?.role === "STUDENT" &&
-                      (enrollments.some(
-                        (e: any) => e.course === course._id
-                      ) ? (
+                      (enrollments.some((e: any) => e.course === course._id) ? (
                         <button
                           className="btn btn-warning"
                           onClick={() => {
@@ -194,7 +200,13 @@ export default function Dashboard({
                         <button
                           onClick={(event) => {
                             event.preventDefault();
-                            deleteCourse(course._id);
+                            if (
+                              window.confirm(
+                                "Are you sure you want to delete this course?"
+                              )
+                            ) {
+                              deleteCourse(course._id);
+                            }
                           }}
                           className="btn btn-danger float-end"
                           id="wd-delete-course-click"

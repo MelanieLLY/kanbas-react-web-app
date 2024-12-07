@@ -11,17 +11,18 @@ export default function Session({ children }: { children: any }) {
     console.log("Session - Fetching profile...");
     try {
       const currentUser = await client.profile();
-      console.log("Session - Fetched profile:", currentUser);
+      console.log("Session - Fetched profile:", currentUser); // 确认获取的数据
       if (currentUser) {
         localStorage.setItem("currentUser", JSON.stringify(currentUser));
-        dispatch(setCurrentUser(currentUser));      }
+        dispatch(setCurrentUser(currentUser));
+      }
     } catch (err: any) {
       console.error("Session - Error fetching profile:", err.response?.data || err.message);
       localStorage.removeItem("currentUser");
-
     }
     setPending(false);
   };
+  
   
   useEffect(() => {
     const savedUser = localStorage.getItem("currentUser");

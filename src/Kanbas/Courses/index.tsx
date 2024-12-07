@@ -30,13 +30,13 @@ export default function Courses({ courses }: { courses: any[] }) {
         </div>
         <div className="flex-fill">
           <Routes>
-          <Route path="Home" element={<Home />} />
+            <Route path="Home" element={<Home />} />
             <Route path="Modules" element={<Modules />} />
             <Route path="Assignments" element={<Assignments />} />
             <Route path="Assignments/Editor" element={<AssignmentEditor />} />
             <Route path="Assignments/:aid" element={<AssignmentEditor />} />
-            element={<PeopleTable fetchUsers={emptyFetchUsers} />}
-            </Routes>
+            <Route path="People"element={<PeopleTable fetchUsers={emptyFetchUsers} />}/>
+          </Routes>
         </div>
       </div>
     </div>

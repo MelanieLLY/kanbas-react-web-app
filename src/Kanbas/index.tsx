@@ -35,26 +35,45 @@ export default function Kanbas() {
     buttonText: "Go",
   });
   const dispatch = useDispatch(); 
-
-
   const { cid } = useParams();
   const location = useLocation();
-  const addNewCourse = async () => {
-    const newCourse = await userClient.createCourse(course); // 调用 API 创建课程
-    setCourses([...courses, newCourse]); // 更新状态
-  };
-  const deleteCourse = async (courseId: string) => {
-    const status = await courseClient.deleteCourse(courseId);
-    setCourses(courses.filter((course) => course._id !== courseId));
-  };
-  const fetchCourses = async () => {
-    let courses = [];
+  const [enrolling, setEnrolling] = useState<boolean>(false);
+
+  const findCoursesForUser = async () => {
     try {
-      courses = await userClient.findAllCourses();
+      const courses = await userClient.findCoursesForUser(currentUser._id);
+      setCourses(courses);
     } catch (error) {
       console.error(error);
     }
-    setCourses(courses);
+  }; 
+  const addNewCourse = async () => {
+    const newCourse = await courseClient.createCourse(course);
+    setCourses([...courses, newCourse]); 
+  };
+  const deleteCourse = async (courseId: string) => {
+    const status = await courseClient.deleteCourse(courseId);
+    if (status) {
+      setCourses(courses.filter((course) => course._id !== courseId)); // 更新课程列表
+    }
+  };
+  const fetchCourses = async () => {
+    try {
+      const allCourses = await courseClient.fetchAllCourses();
+      const enrolledCourses = await userClient.findCoursesForUser(
+        currentUser._id
+      );
+      const courses = allCourses.map((course: any) => {
+        if (enrolledCourses.find((c: any) => c._id === course._id)) {
+          return { ...course, enrolled: true };
+        } else {
+          return course;
+        }
+      });
+      setCourses(courses);
+    } catch (error) {
+      console.error(error); 
+    }
   };
   const updateCourse = async () => {
     await courseClient.updateCourse(course);
@@ -76,9 +95,12 @@ export default function Kanbas() {
   };
   
   useEffect(() => {
-    fetchCourses();
-    fetchEnrollments(); // 加载注册信息
-  }, [currentUser]);
+    if (enrolling) {
+      fetchCourses();
+    } else {
+      findCoursesForUser();
+    }
+  }, [currentUser, enrolling]);
 
   return (
     // <Provider store={store}>
@@ -100,6 +122,7 @@ export default function Kanbas() {
                     addNewCourse={addNewCourse}
                     deleteCourse={deleteCourse}
                     updateCourse={updateCourse}
+                    enrolling={enrolling} setEnrolling={setEnrolling}
                   />
                 </ProtectedRoute>
               }
