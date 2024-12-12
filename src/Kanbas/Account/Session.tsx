@@ -34,7 +34,7 @@ export default function Session({ children }: { children: any }) {
   }, []);
 
   if (pending) {
-    return <div>Loading...</div>;
+    return <div>"Loading... Please wait, it might take up to a minute to load. In the meantime, we could sing 'Happy Birthday' three times! </div>;
   }
 
   return children;
